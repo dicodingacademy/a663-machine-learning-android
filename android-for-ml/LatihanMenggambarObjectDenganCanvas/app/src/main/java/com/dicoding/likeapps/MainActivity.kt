@@ -36,25 +36,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.imageView.setImageBitmap(mBitmap)
-        showText()
+//        showText()
+        showFace()
+        showEyes()
+        showMouth(false)
 
-        binding.like.setOnClickListener {
-            showEars()
-            showFace()
-            showMouth(true)
-            showEyes()
-            showNose()
-            showHair()
-        }
-
-        binding.dislike.setOnClickListener {
-            showEars()
-            showFace()
-            showMouth(false)
-            showEyes()
-            showNose()
-            showHair()
-        }
+//        binding.like.setOnClickListener {
+//            showEars()
+//            showFace()
+//            showMouth(true)
+//            showEyes()
+//            showNose()
+//            showHair()
+//        }
+//
+//        binding.dislike.setOnClickListener {
+//            showEars()
+//            showFace()
+//            showMouth(false)
+//            showEyes()
+//            showNose()
+//            showHair()
+//        }
     }
 
     private fun showFace() {
