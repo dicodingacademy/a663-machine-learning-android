@@ -18,7 +18,6 @@ class ResultActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(findViewById(R.id.toolbar))
-        binding.toolbar.title = "Hasil Analisis"
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
@@ -36,7 +35,7 @@ class ResultActivity : AppCompatActivity() {
     }
 
     companion object {
-        val EXTRA_IMAGE_URI = "key_image_uri"
-        val EXTRA_RESULT = "extra_result"
+        const val EXTRA_IMAGE_URI = "extra_image_uri"
+        const val EXTRA_RESULT = "extra_result"
     }
 }
