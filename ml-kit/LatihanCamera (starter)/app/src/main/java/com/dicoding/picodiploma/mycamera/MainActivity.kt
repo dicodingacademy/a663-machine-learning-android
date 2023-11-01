@@ -103,10 +103,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun analyzeImage() {
-//        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-        startActivity(intent)
+        currentImageUri?.let {
+            val intent = Intent(this, ResultActivity::class.java)
+            intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
+            startActivity(intent)
+        } ?: run {
+            Toast.makeText(this, getString(R.string.empty_image_warning), Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {

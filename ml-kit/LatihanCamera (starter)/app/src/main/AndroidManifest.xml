@@ -17,9 +17,7 @@
         android:theme="@style/Theme.MyCamera">
         <activity
             android:name=".ResultActivity"
-            android:exported="false"
-            android:label="@string/activity_result"
-            android:theme="@style/Theme.MyCamera.NoActionBar" />
+            android:exported="false" />
 
         <activity
             android:name=".CameraActivity"

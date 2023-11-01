@@ -5,5 +5,5 @@
     <string name="gallery">Galeri</string>
     <string name="analyze">Analyze</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
-    <string name="activity_result">Hasil Analisis</string>
+    <string name="result">Hasil Analisis</string>
 </resources>
