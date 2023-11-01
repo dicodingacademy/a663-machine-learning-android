@@ -3,6 +3,7 @@ package com.dicoding.picodiploma.mycamera
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.picodiploma.mycamera.databinding.ActivityResultBinding
 

@@ -118,6 +118,8 @@ class MainActivity : AppCompatActivity() {
         )
         currentImageUri?.let {
             textRecognizer.analyze(this, it)
+        } ?: run {
+            Toast.makeText(this, getString(R.string.empty_image_warning), Toast.LENGTH_SHORT).show()
         }
     }
 
