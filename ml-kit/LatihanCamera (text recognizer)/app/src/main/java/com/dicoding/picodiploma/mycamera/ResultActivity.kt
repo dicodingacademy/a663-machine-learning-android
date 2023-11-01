@@ -30,9 +30,13 @@ class ResultActivity : AppCompatActivity() {
             binding.resultImage.setImageURI(it)
         }
 
+        val detectedText = intent.getStringExtra(EXTRA_RESULT)
+        binding.contentScrolling.resultText.text = detectedText
+
     }
 
     companion object {
         val EXTRA_IMAGE_URI = "key_image_uri"
+        val EXTRA_RESULT = "extra_result"
     }
 }
