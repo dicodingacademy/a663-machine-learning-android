@@ -19,8 +19,7 @@
 
         <activity
             android:name=".ResultActivity"
-            android:exported="false"
-            android:label="@string/activity_result" />
+            android:exported="false"/>
 
         <activity
             android:name=".CameraActivity"

@@ -1,11 +1,7 @@
 package com.dicoding.picodiploma.mycamera
 
 import android.content.Context
-import android.media.Image
 import android.net.Uri
-import androidx.camera.core.ExperimentalGetImage
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -37,6 +33,8 @@ class TextRecognitionAnalyzer(
                         val detectedText: String = visionText.text
                         if (detectedText.isNotBlank()) {
                             onDetectedTextUpdated(detectedText)
+                        } else {
+                            onError("No text recognized!")
                         }
                     }
                     .addOnFailureListener {

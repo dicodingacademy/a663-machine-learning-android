@@ -9,11 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.view.CameraController
-import androidx.camera.view.LifecycleCameraController
-import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.dicoding.picodiploma.mycamera.CameraActivity.Companion.CAMERAX_RESULT
