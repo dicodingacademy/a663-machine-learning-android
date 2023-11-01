@@ -2,8 +2,10 @@ package com.dicoding.likeapps
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Region
@@ -36,28 +38,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.imageView.setImageBitmap(mBitmap)
-//        showText()
-        showFace()
-        showEyes()
-        showMouth(false)
+        showText()
 
-//        binding.like.setOnClickListener {
-//            showEars()
-//            showFace()
-//            showMouth(true)
-//            showEyes()
-//            showNose()
-//            showHair()
-//        }
-//
-//        binding.dislike.setOnClickListener {
-//            showEars()
-//            showFace()
-//            showMouth(false)
-//            showEyes()
-//            showNose()
-//            showHair()
-//        }
+        binding.like.text = "Memunculkan Object"
+        binding.like.setOnClickListener {
+            showEars()
+            showFace()
+            showMouth(true)
+            showEyes()
+            showNose()
+            showHair()
+        }
+        binding.dislike.text = "Menghapus Object"
+        binding.dislike.setOnClickListener {
+            mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC)
+        }
     }
 
     private fun showFace() {
