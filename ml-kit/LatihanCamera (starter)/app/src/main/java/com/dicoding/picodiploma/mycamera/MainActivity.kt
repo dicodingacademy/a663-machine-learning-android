@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.cameraXButton.setOnClickListener { startCameraX() }
-        binding.uploadButton.setOnClickListener { uploadImage() }
+        binding.analyzeButton.setOnClickListener { analyzeImage() }
     }
 
     private fun startGallery() {
@@ -102,8 +102,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage() {
-        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+    private fun analyzeImage() {
+//        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
+        startActivity(intent)
     }
 
     companion object {

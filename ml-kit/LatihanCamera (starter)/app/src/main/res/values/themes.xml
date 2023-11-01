@@ -7,4 +7,13 @@
     </style>
 
     <style name="Theme.MyCamera" parent="Base.Theme.MyCamera" />
+
+    <style name="Theme.MyCamera.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MyCamera.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MyCamera.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
