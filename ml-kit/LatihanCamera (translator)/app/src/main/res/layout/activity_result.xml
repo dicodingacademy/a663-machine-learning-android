@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/result" />
+            tools:text="@string/result" />
 
         <Button
             android:id="@+id/translateButton"
@@ -42,6 +42,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/result" />
+            tools:text="@string/result" />
     </LinearLayout>
 </ScrollView>
