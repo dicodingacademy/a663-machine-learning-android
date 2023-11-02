@@ -3,6 +3,7 @@ package com.dicoding.picodiploma.mycamera
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
@@ -35,34 +36,54 @@ class ResultActivity : AppCompatActivity() {
         binding.resultText.text = detectedText
 
         binding.translateButton.setOnClickListener {
-            val options = TranslatorOptions.Builder()
-                .setSourceLanguage(TranslateLanguage.INDONESIAN)
-                .setTargetLanguage(TranslateLanguage.ENGLISH)
-                .build()
-            val indonesianEnglishTranslator = Translation.getClient(options)
-
-            val conditions = DownloadConditions.Builder()
-                .requireWifi()
-                .build()
-            indonesianEnglishTranslator.downloadModelIfNeeded(conditions)
-                .addOnSuccessListener {
-                    showToast("Model berhasil diunduh")
-                }
-                .addOnFailureListener { exception ->
-                    showToast("Model gagal diunduh")
-                }
-
-            indonesianEnglishTranslator.translate(detectedText.toString())
-                .addOnSuccessListener { translatedText ->
-                    binding.translatedText.text = translatedText
-                    indonesianEnglishTranslator.close()
-                }
-                .addOnFailureListener { exception ->
-                    showToast("Gagal menerjemahkan!")
-                    print(exception.stackTrace)
-                    indonesianEnglishTranslator.close()
-                }
+            binding.progressIndicator.visibility = View.VISIBLE
+            translateText(detectedText)
         }
+    }
+
+    private fun translateText(detectedText: String?) {
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.INDONESIAN)
+            .build()
+        val indonesianEnglishTranslator = Translation.getClient(options)
+
+        val modelManager = RemoteModelManager.getInstance()
+        modelManager.getDownloadedModels(TranslateRemoteModel::class.java)
+            .addOnSuccessListener { models ->
+                binding.progressIndicator.visibility = View.GONE
+
+                availableModels = models.sortedBy { it.language }.map { it.language }
+
+                if (availableModels.contains("id")) {
+                    indonesianEnglishTranslator.translate(detectedText.toString())
+                        .addOnSuccessListener { translatedText ->
+                            binding.translatedText.text = translatedText
+                            indonesianEnglishTranslator.close()
+                        }
+                        .addOnFailureListener { exception ->
+                            showToast("Gagal menerjemahkan!")
+                            print(exception.stackTrace)
+                            indonesianEnglishTranslator.close()
+                        }
+                } else {
+                    showToast("Model sedang diunduh. Coba lagi nanti!")
+                    val indonesianModel =
+                        TranslateRemoteModel.Builder(TranslateLanguage.INDONESIAN).build()
+                    val conditions = DownloadConditions.Builder()
+                        .requireWifi()
+                        .build()
+                    modelManager.download(indonesianModel, conditions)
+                        .addOnSuccessListener {
+                            showToast("Model berhasil diunduh")
+                            translateText(detectedText)
+                        }
+                        .addOnFailureListener { exception ->
+                            binding.progressIndicator.visibility = View.GONE
+                            showToast("Model gagal diunduh")
+                        }
+                }
+            }
     }
 
     private fun showToast(message: String) {
