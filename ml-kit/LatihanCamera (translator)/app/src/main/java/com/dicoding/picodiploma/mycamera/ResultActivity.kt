@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import com.dicoding.picodiploma.mycamera.databinding.ActivityResultBinding
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.common.model.RemoteModelManager
@@ -18,7 +17,7 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 class ResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultBinding
-    var availableModels = listOf<String>()
+    private var availableModels = listOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +79,7 @@ class ResultActivity : AppCompatActivity() {
                         }
                         .addOnFailureListener { exception ->
                             binding.progressIndicator.visibility = View.GONE
-                            showToast("Model gagal diunduh")
+                            showToast("Model gagal diunduh. ${exception.message.toString()}")
                         }
                 }
             }
