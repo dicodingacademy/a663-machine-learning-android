@@ -61,12 +61,12 @@ class ResultActivity : AppCompatActivity() {
                             indonesianEnglishTranslator.close()
                         }
                         .addOnFailureListener { exception ->
-                            showToast("Gagal menerjemahkan!")
+                            showToast(exception.message.toString())
                             print(exception.stackTrace)
                             indonesianEnglishTranslator.close()
                         }
                 } else {
-                    showToast("Model sedang diunduh. Coba lagi nanti!")
+                    showToast(getString(R.string.downloading_model))
                     val indonesianModel =
                         TranslateRemoteModel.Builder(TranslateLanguage.INDONESIAN).build()
                     val conditions = DownloadConditions.Builder()
@@ -74,12 +74,12 @@ class ResultActivity : AppCompatActivity() {
                         .build()
                     modelManager.download(indonesianModel, conditions)
                         .addOnSuccessListener {
-                            showToast("Model berhasil diunduh")
+                            showToast(getString(R.string.downloading_model_success))
                             translateText(detectedText)
                         }
                         .addOnFailureListener { exception ->
                             binding.progressIndicator.visibility = View.GONE
-                            showToast("Model gagal diunduh. ${exception.message.toString()}")
+                            showToast(getString(R.string.downloading_model_fail))
                         }
                 }
             }
