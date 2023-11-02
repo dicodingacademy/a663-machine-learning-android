@@ -7,5 +7,4 @@
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
     <string name="result">Hasil Analisis</string>
     <string name="translate">Translate</string>
-    <string name="downloading_model">Model sedang diunduh. Proses akan lebih lama.</string>
 </resources>
