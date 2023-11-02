@@ -15,6 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.dicoding.picodiploma.mycamera.CameraActivity.Companion.CAMERAX_RESULT
 import com.dicoding.picodiploma.mycamera.databinding.ActivityMainBinding
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,7 +55,14 @@ class MainActivity : AppCompatActivity() {
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.cameraXButton.setOnClickListener { startCameraX() }
-        binding.analyzeButton.setOnClickListener { analyzeImage() }
+        binding.analyzeButton.setOnClickListener {
+            currentImageUri?.let {
+                analyzeImage(it)
+            } ?: run {
+                Toast.makeText(this, getString(R.string.empty_image_warning), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     private fun startGallery() {
@@ -103,28 +114,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun analyzeImage() {
-        val textRecognizer = TextRecognitionAnalyzer(
-            onDetectedTextUpdated = { detectedText ->
-                binding.progressIndicator.visibility = View.GONE
-                val intent = Intent(this, ResultActivity::class.java)
-                intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-                intent.putExtra(ResultActivity.EXTRA_RESULT, detectedText)
-                startActivity(intent)
-            },
-            onError = { error ->
-                runOnUiThread {
+    private fun analyzeImage(uri: Uri) {
+        binding.progressIndicator.visibility = View.VISIBLE
+
+        val textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        val inputImage: InputImage = InputImage.fromFilePath(this, uri)
+        textRecognizer.process(inputImage)
+            .addOnSuccessListener { visionText: Text ->
+                val detectedText: String = visionText.text
+                if (detectedText.isNotBlank()) {
                     binding.progressIndicator.visibility = View.GONE
-                    Toast.makeText(this@MainActivity, error, Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, ResultActivity::class.java)
+                    intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, uri.toString())
+                    intent.putExtra(ResultActivity.EXTRA_RESULT, detectedText)
+                    startActivity(intent)
+                } else {
+                    binding.progressIndicator.visibility = View.GONE
+                    showToast("No text recognized!")
                 }
             }
-        )
-        currentImageUri?.let {
-            binding.progressIndicator.visibility = View.VISIBLE
-            textRecognizer.analyze(this, it)
-        } ?: run {
-            Toast.makeText(this, getString(R.string.empty_image_warning), Toast.LENGTH_SHORT).show()
-        }
+            .addOnFailureListener {
+                binding.progressIndicator.visibility = View.GONE
+                showToast(it.message.toString())
+            }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
