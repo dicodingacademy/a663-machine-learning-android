@@ -22,5 +22,19 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/result" />
+
+        <Button
+            android:id="@+id/translateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/translate" />
+
+        <TextView
+            android:id="@+id/translated_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/result" />
     </LinearLayout>
 </ScrollView>
