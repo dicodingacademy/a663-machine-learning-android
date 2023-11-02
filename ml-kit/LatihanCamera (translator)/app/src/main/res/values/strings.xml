@@ -10,4 +10,5 @@
     <string name="downloading_model">Model sedang diunduh. Proses akan lebih lama.</string>
     <string name="downloading_model_success">Model berhasil diunduh</string>
     <string name="downloading_model_fail">Model gagal diunduh</string>
+    <string name="no_text_recognized">No text recognized!</string>
 </resources>

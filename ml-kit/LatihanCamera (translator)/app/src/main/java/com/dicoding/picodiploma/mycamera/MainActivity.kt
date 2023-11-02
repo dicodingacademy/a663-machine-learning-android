@@ -31,9 +31,9 @@ class MainActivity : AppCompatActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Toast.makeText(this, "Permission request granted", Toast.LENGTH_LONG).show()
+                showToast("Permission request granted")
             } else {
-                Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
+                showToast("Permission request denied")
             }
         }
 
@@ -59,8 +59,7 @@ class MainActivity : AppCompatActivity() {
             currentImageUri?.let {
                 analyzeImage(it)
             } ?: run {
-                Toast.makeText(this, getString(R.string.empty_image_warning), Toast.LENGTH_SHORT)
-                    .show()
+                showToast(getString(R.string.empty_image_warning))
             }
         }
     }
@@ -130,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 } else {
                     binding.progressIndicator.visibility = View.GONE
-                    showToast("No text recognized!")
+                    showToast(getString(R.string.no_text_recognized))
                 }
             }
             .addOnFailureListener {

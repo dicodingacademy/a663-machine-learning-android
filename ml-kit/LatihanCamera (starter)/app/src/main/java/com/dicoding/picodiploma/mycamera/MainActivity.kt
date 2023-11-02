@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Toast.makeText(this, "Permission request granted", Toast.LENGTH_LONG).show()
+                showToast("Permission request granted")
             } else {
-                Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
+                showToast("Permission request denied")
             }
         }
 
@@ -50,7 +50,13 @@ class MainActivity : AppCompatActivity() {
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.cameraXButton.setOnClickListener { startCameraX() }
-        binding.analyzeButton.setOnClickListener { analyzeImage() }
+        binding.analyzeButton.setOnClickListener {
+            currentImageUri?.let {
+                analyzeImage(it)
+            } ?: run {
+                showToast(getString(R.string.empty_image_warning))
+            }
+        }
     }
 
     private fun startGallery() {
@@ -102,14 +108,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun analyzeImage() {
-        currentImageUri?.let {
-            val intent = Intent(this, ResultActivity::class.java)
-            intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-            startActivity(intent)
-        } ?: run {
-            Toast.makeText(this, getString(R.string.empty_image_warning), Toast.LENGTH_SHORT).show()
-        }
+    private fun analyzeImage(uri: Uri) {
+        val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
+        startActivity(intent)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
