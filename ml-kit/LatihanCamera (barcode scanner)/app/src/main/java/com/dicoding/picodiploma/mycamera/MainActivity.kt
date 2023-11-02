@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                Toast.makeText(this, "Permission request granted", Toast.LENGTH_LONG).show()
+                showToast("Permission request granted")
             } else {
-                Toast.makeText(this, "Permission request denied", Toast.LENGTH_LONG).show()
+                showToast("Permission request denied")
             }
         }
 
@@ -50,7 +50,13 @@ class MainActivity : AppCompatActivity() {
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.cameraXButton.setOnClickListener { startCameraX() }
-        binding.uploadButton.setOnClickListener { uploadImage() }
+        binding.analyzeButton.setOnClickListener {
+            currentImageUri?.let {
+                analyzeImage(it)
+            } ?: run {
+                showToast(getString(R.string.empty_image_warning))
+            }
+        }
     }
 
     private fun startGallery() {
@@ -102,8 +108,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage() {
-        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+    private fun analyzeImage(uri: Uri) {
+        showToast("Fitur ini belum tersedia")
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
