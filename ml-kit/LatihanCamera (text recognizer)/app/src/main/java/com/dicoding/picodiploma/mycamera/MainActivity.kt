@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -105,6 +106,7 @@ class MainActivity : AppCompatActivity() {
     private fun analyzeImage() {
         val textRecognizer = TextRecognitionAnalyzer(
             onDetectedTextUpdated = { detectedText ->
+                binding.progressIndicator.visibility = View.GONE
                 val intent = Intent(this, ResultActivity::class.java)
                 intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
                 intent.putExtra(ResultActivity.EXTRA_RESULT, detectedText)
@@ -112,11 +114,13 @@ class MainActivity : AppCompatActivity() {
             },
             onError = { error ->
                 runOnUiThread {
+                    binding.progressIndicator.visibility = View.GONE
                     Toast.makeText(this@MainActivity, error, Toast.LENGTH_SHORT).show()
                 }
             }
         )
         currentImageUri?.let {
+            binding.progressIndicator.visibility = View.VISIBLE
             textRecognizer.analyze(this, it)
         } ?: run {
             Toast.makeText(this, getString(R.string.empty_image_warning), Toast.LENGTH_SHORT).show()
