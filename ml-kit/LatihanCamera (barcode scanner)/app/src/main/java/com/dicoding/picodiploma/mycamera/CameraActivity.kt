@@ -24,6 +24,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 class CameraActivity : AppCompatActivity() {
     private lateinit var barcodeScanner: BarcodeScanner
     private lateinit var binding: ActivityCameraBinding
+    private var firstCall = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,65 +46,62 @@ class CameraActivity : AppCompatActivity() {
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
         barcodeScanner = BarcodeScanning.getClient(options)
-        var firstCall = true
 
+        val analyzer = MlKitAnalyzer(
+            listOf(barcodeScanner),
+            COORDINATE_SYSTEM_VIEW_REFERENCED,
+            ContextCompat.getMainExecutor(this)
+        ) { result: MlKitAnalyzer.Result? ->
+            showResult(result)
+        }
         cameraController.setImageAnalysisAnalyzer(
             ContextCompat.getMainExecutor(this),
-            MlKitAnalyzer(
-                listOf(barcodeScanner),
-                COORDINATE_SYSTEM_VIEW_REFERENCED,
-                ContextCompat.getMainExecutor(this)
-            ) { result: MlKitAnalyzer.Result? ->
-
-                if (firstCall) {
-                    val barcodeResults = result?.getValue(barcodeScanner)
-
-                    val alertDialog = AlertDialog.Builder(this)
-
-                    if ((barcodeResults != null) &&
-                        (barcodeResults.size != 0) &&
-                        (barcodeResults.first() != null)
-                    ) {
-                        firstCall = false
-                        val barcode = barcodeResults[0]
-
-                        alertDialog.setTitle("Hasil Scan")
-                            .setMessage(barcode.rawValue)
-                            .setPositiveButton(
-                                "Buka"
-                            ) { p0, p1 ->
-                                when (barcode.valueType) {
-                                    Barcode.TYPE_URL -> {
-                                        val openBrowserIntent = Intent(Intent.ACTION_VIEW)
-                                        openBrowserIntent.data = Uri.parse(barcode.url?.url)
-                                        startActivity(openBrowserIntent)
-                                    }
-
-                                    else -> {
-                                        Toast.makeText(
-                                            this,
-                                            "Unsupported data type",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        startCamera()
-                                    }
-                                }
-                            }
-                            .setNegativeButton("Scan lagi"){_, _ ->
-                                firstCall = true
-                            }
-                            .create()
-                        alertDialog
-                            .setCancelable(false)
-                            .show()
-                    }
-                }
-
-            }
+            analyzer
         )
-
         cameraController.bindToLifecycle(this)
         previewView.controller = cameraController
+    }
+
+    private fun showResult(result: MlKitAnalyzer.Result?) {
+        if (firstCall) {
+            val barcodeResults = result?.getValue(barcodeScanner)
+
+            val alertDialog = AlertDialog.Builder(this)
+
+            if ((barcodeResults != null) &&
+                (barcodeResults.size != 0) &&
+                (barcodeResults.first() != null)
+            ) {
+                firstCall = false
+                val barcode = barcodeResults[0]
+                alertDialog.setTitle("Hasil Scan")
+                    .setMessage(barcode.rawValue)
+                    .setPositiveButton(
+                        "Buka"
+                    ) { _, _ ->
+                        when (barcode.valueType) {
+                            Barcode.TYPE_URL -> {
+                                val openBrowserIntent = Intent(Intent.ACTION_VIEW)
+                                openBrowserIntent.data = Uri.parse(barcode.url?.url)
+                                startActivity(openBrowserIntent)
+                            }
+
+                            else -> {
+                                Toast.makeText(this, "Unsupported data type", Toast.LENGTH_SHORT)
+                                    .show()
+                                startCamera()
+                            }
+                        }
+                    }
+                    .setNegativeButton("Scan lagi") { _, _ ->
+                        firstCall = true
+                    }
+                    .create()
+                alertDialog
+                    .setCancelable(false)
+                    .show()
+            }
+        }
     }
 
     private fun hideSystemUI() {
