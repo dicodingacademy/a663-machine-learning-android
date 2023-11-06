@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Menghidupkan fungsi OnClick untuk setiap tombol
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.cameraXButton.setOnClickListener { startCameraX() }

@@ -15,26 +15,33 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Digunakan untuk mengganti kamera
         binding.switchCamera.setOnClickListener {
             startCamera()
         }
+
+        // Digunakan untuk mengambil gambar/capture
         binding.captureImage.setOnClickListener { takePhoto() }
     }
 
+    // Pemanggilan function agar tampilan fullscreen dan memunculkan Camera X
     public override fun onResume() {
         super.onResume()
         hideSystemUI()
         startCamera()
     }
 
+    // Function untuk memunculkan Camera X
     private fun startCamera() {
         // showCamera
     }
 
+    // Function untuk mengambil gambar
     private fun takePhoto() {
         // takePhoto
     }
 
+    // Digunakan agar tampilan CameraX bisa full screen
     private fun hideSystemUI() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
