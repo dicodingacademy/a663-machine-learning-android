@@ -47,42 +47,31 @@ class ResultActivity : AppCompatActivity() {
             .build()
         val indonesianEnglishTranslator = Translation.getClient(options)
 
-        val modelManager = RemoteModelManager.getInstance()
-        modelManager.getDownloadedModels(TranslateRemoteModel::class.java)
-            .addOnSuccessListener { models ->
-                binding.progressIndicator.visibility = View.GONE
-
-                availableModels = models.sortedBy { it.language }.map { it.language }
-
-                if (availableModels.contains("id")) {
-                    indonesianEnglishTranslator.translate(detectedText.toString())
-                        .addOnSuccessListener { translatedText ->
-                            binding.translatedText.text = translatedText
-                            indonesianEnglishTranslator.close()
-                        }
-                        .addOnFailureListener { exception ->
-                            showToast(exception.message.toString())
-                            print(exception.stackTrace)
-                            indonesianEnglishTranslator.close()
-                        }
-                } else {
-                    showToast(getString(R.string.downloading_model))
-                    val indonesianModel =
-                        TranslateRemoteModel.Builder(TranslateLanguage.INDONESIAN).build()
-                    val conditions = DownloadConditions.Builder()
-                        .requireWifi()
-                        .build()
-                    modelManager.download(indonesianModel, conditions)
-                        .addOnSuccessListener {
-                            showToast(getString(R.string.downloading_model_success))
-                            translateText(detectedText)
-                        }
-                        .addOnFailureListener { exception ->
-                            binding.progressIndicator.visibility = View.GONE
-                            showToast(getString(R.string.downloading_model_fail))
-                        }
-                }
+        val conditions = DownloadConditions.Builder()
+            .requireCharging()
+            .requireWifi()
+            .build()
+        indonesianEnglishTranslator.downloadModelIfNeeded(conditions)
+            .addOnSuccessListener {
+                indonesianEnglishTranslator.translate(detectedText.toString())
+                    .addOnSuccessListener { translatedText ->
+                        binding.translatedText.text = translatedText
+                        indonesianEnglishTranslator.close()
+                        binding.progressIndicator.visibility = View.GONE
+                    }
+                    .addOnFailureListener { exception ->
+                        showToast(exception.message.toString())
+                        print(exception.stackTrace)
+                        indonesianEnglishTranslator.close()
+                        binding.progressIndicator.visibility = View.GONE
+                    }
             }
+            .addOnFailureListener { exception ->
+                showToast(getString(R.string.downloading_model_fail))
+                binding.progressIndicator.visibility = View.GONE
+            }
+
+        lifecycle.addObserver(indonesianEnglishTranslator)
     }
 
     private fun showToast(message: String) {
