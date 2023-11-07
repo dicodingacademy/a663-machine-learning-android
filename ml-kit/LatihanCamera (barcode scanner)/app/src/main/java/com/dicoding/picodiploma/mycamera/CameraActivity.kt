@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED
 import androidx.camera.view.LifecycleCameraController
-import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.mycamera.databinding.ActivityCameraBinding
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -24,7 +23,6 @@ import com.google.mlkit.vision.barcode.common.Barcode
 class CameraActivity : AppCompatActivity() {
     private lateinit var barcodeScanner: BarcodeScanner
     private lateinit var binding: ActivityCameraBinding
-    private var firstCall = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +37,6 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        val cameraController = LifecycleCameraController(baseContext)
-        val previewView: PreviewView = binding.viewFinder
-
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
@@ -54,31 +49,47 @@ class CameraActivity : AppCompatActivity() {
         ) { result: MlKitAnalyzer.Result? ->
             showResult(result)
         }
+
+        val cameraController = LifecycleCameraController(baseContext)
         cameraController.setImageAnalysisAnalyzer(
             ContextCompat.getMainExecutor(this),
             analyzer
         )
         cameraController.bindToLifecycle(this)
-        previewView.controller = cameraController
+        binding.viewFinder.controller = cameraController
     }
 
+    private var firstCall = true
+
     private fun showResult(result: MlKitAnalyzer.Result?) {
+//        val barcodeResults = result?.getValue(barcodeScanner)
+//        if ((barcodeResults != null) &&
+//            (barcodeResults.size != 0) &&
+//            (barcodeResults.first() != null)
+//        ) {
+//            val barcode = barcodeResults[0]
+//            val alertDialog = AlertDialog.Builder(this)
+//                .setMessage(barcode.rawValue)
+//                .setCancelable(false)
+//                .create()
+//            alertDialog.show()
+//        }
         if (firstCall) {
             val barcodeResults = result?.getValue(barcodeScanner)
-
-            val alertDialog = AlertDialog.Builder(this)
-
             if ((barcodeResults != null) &&
                 (barcodeResults.size != 0) &&
                 (barcodeResults.first() != null)
             ) {
                 firstCall = false
                 val barcode = barcodeResults[0]
-                alertDialog.setTitle("Hasil Scan")
+
+                val alertDialog = AlertDialog.Builder(this)
+                alertDialog
                     .setMessage(barcode.rawValue)
                     .setPositiveButton(
                         "Buka"
                     ) { _, _ ->
+                        firstCall = true
                         when (barcode.valueType) {
                             Barcode.TYPE_URL -> {
                                 val openBrowserIntent = Intent(Intent.ACTION_VIEW)
@@ -96,10 +107,9 @@ class CameraActivity : AppCompatActivity() {
                     .setNegativeButton("Scan lagi") { _, _ ->
                         firstCall = true
                     }
-                    .create()
-                alertDialog
                     .setCancelable(false)
-                    .show()
+                    .create()
+                alertDialog.show()
             }
         }
     }
