@@ -48,7 +48,6 @@ class ResultActivity : AppCompatActivity() {
         val indonesianEnglishTranslator = Translation.getClient(options)
 
         val conditions = DownloadConditions.Builder()
-            .requireCharging()
             .requireWifi()
             .build()
         indonesianEnglishTranslator.downloadModelIfNeeded(conditions)
