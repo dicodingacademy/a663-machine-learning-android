@@ -12,4 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-include ':app'
+
+rootProject.name = "MyMediaPlayer"
+include(":app")
+ 

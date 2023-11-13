@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyMediaPlayer</string>
     <string name="btn_text_play">Play</string>
-    <string name="text_mediaplayer">Test Mediaplayer</string>
+    <string name="btn_text_pause">Pause</string>
+    <string name="text_media_player">Media Player</string>
     <string name="btn_text_stop">Stop</string>
 </resources>
