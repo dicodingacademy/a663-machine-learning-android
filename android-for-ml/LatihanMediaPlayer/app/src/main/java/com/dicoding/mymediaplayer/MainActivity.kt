@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         btnStop = findViewById(R.id.btn_stop)
 
         init()
-        isPlay(false)
+//        isPlay(false)
 
         btnPlay.setOnClickListener {
             play()
@@ -55,14 +55,14 @@ class MainActivity : AppCompatActivity() {
     private fun play() {
         if (!isReady) {
             mMediaPlayer?.prepareAsync()
-            isPlay(true)
+//            isPlay(true)
         } else {
             if (mMediaPlayer?.isPlaying as Boolean) {
                 mMediaPlayer?.pause()
-                isPlay(false)
+//                isPlay(false)
             } else {
                 mMediaPlayer?.start()
-                isPlay(true)
+//                isPlay(true)
             }
         }
     }
@@ -71,17 +71,17 @@ class MainActivity : AppCompatActivity() {
         if (mMediaPlayer?.isPlaying as Boolean || isReady) {
             mMediaPlayer?.stop()
             isReady = false
-            isPlay(false)
+//            isPlay(false)
         }
     }
-
-    private fun isPlay(state: Boolean) {
-        if (state){
-            btnPlay.text = getString(R.string.btn_text_pause)
-            btnStop.isEnabled = true
-        } else {
-            btnPlay.text = getString(R.string.btn_text_play)
-            btnStop.isEnabled = false
-        }
-    }
+//
+//    private fun isPlay(state: Boolean) {
+//        if (state){
+//            btnPlay.text = getString(R.string.btn_text_pause)
+//            btnStop.isEnabled = true
+//        } else {
+//            btnPlay.text = getString(R.string.btn_text_play)
+//            btnStop.isEnabled = false
+//        }
+//    }
 }
