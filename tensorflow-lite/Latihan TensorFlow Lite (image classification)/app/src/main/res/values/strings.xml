@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyCamera</string>
+    <string name="camera_x">CameraX</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="analyze">Analyze</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="result">Hasil Analisis</string>
+    <string name="no_text_recognized">No text recognized!</string>
+</resources>
