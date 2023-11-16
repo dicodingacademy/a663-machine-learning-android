@@ -8,7 +8,7 @@ import android.widget.Button
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
-    private var mMediaPlayer: MediaPlayer? = null
+    private var mediaPlayer: MediaPlayer? = null
     private var isReady: Boolean = false
 
     private lateinit var btnPlay: Button
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         btnPlay = findViewById(R.id.btn_play)
         btnStop = findViewById(R.id.btn_stop)
 
-        init()
+        initMediaPlayer()
 //        isPlay(false)
 
         btnPlay.setOnClickListener {
@@ -31,45 +31,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun init() {
-        mMediaPlayer = MediaPlayer()
+    private fun initMediaPlayer() {
+        mediaPlayer = MediaPlayer()
         val attribute = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_MEDIA)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
-        mMediaPlayer?.setAudioAttributes(attribute)
+        mediaPlayer?.setAudioAttributes(attribute)
         val afd = applicationContext.resources.openRawResourceFd(R.raw.guitar_background)
         try {
-            mMediaPlayer?.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer?.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
-        mMediaPlayer?.setOnPreparedListener {
+        mediaPlayer?.setOnPreparedListener {
             isReady = true
-            mMediaPlayer?.start()
+            mediaPlayer?.start()
         }
-        mMediaPlayer?.setOnErrorListener { _, _, _ -> false }
+        mediaPlayer?.setOnErrorListener { _, _, _ -> false }
     }
 
     private fun play() {
         if (!isReady) {
-            mMediaPlayer?.prepareAsync()
+            mediaPlayer?.prepareAsync()
 //            isPlay(true)
         } else {
-            if (mMediaPlayer?.isPlaying as Boolean) {
-                mMediaPlayer?.pause()
+            if (mediaPlayer?.isPlaying as Boolean) {
+                mediaPlayer?.pause()
 //                isPlay(false)
             } else {
-                mMediaPlayer?.start()
+                mediaPlayer?.start()
 //                isPlay(true)
             }
         }
     }
 
     private fun stop() {
-        if (mMediaPlayer?.isPlaying as Boolean || isReady) {
-            mMediaPlayer?.stop()
+        if (mediaPlayer?.isPlaying as Boolean || isReady) {
+            mediaPlayer?.stop()
             isReady = false
 //            isPlay(false)
         }
