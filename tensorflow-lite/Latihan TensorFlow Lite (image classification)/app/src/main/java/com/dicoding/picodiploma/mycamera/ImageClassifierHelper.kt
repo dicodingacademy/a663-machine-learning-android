@@ -6,32 +6,23 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.Surface
 import androidx.camera.core.ImageProxy
-import com.dicoding.picodiploma.mycamera.ml.MobilenetModel
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
-import org.tensorflow.lite.support.label.Category
-import org.tensorflow.lite.support.model.Model
 import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.core.vision.ImageProcessingOptions
+import org.tensorflow.lite.task.vision.classifier.Classifications
 import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 
 class ImageClassifierHelper(
     var threshold: Float = 0.1f,
     var maxResults: Int = 3,
     var numThreads: Int = 4,
-    val modelName: String = "MobilenetModel.tflite",
+    val modelName: String = "mobilenet_v1_1.0_224_quantized_1_metadata_1.tflite",
     val context: Context,
-    val imageClassifierListener: ClassifierListener
+    val imageClassifierListener: ClassifierListener?
 ) {
     private var imageClassifier: ImageClassifier? = null
-
-    private val mobilenetModel: MobilenetModel by lazy {
-        val options = Model.Options.Builder()
-            .setNumThreads(4)
-            .build()
-        MobilenetModel.newInstance(context, options)
-    }
 
     init {
         setupImageClassifier()
@@ -95,11 +86,6 @@ class ImageClassifierHelper(
         // Preprocess the image and convert it into a TensorImage for classification.
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(bitmapBuffer))
 
-        val tfImage = TensorImage.fromBitmap(bitmapBuffer)
-        val outputs = mobilenetModel
-            .process(tfImage)
-            .probabilityAsCategoryList
-
         val imageProcessingOptions = ImageProcessingOptions.builder()
             .setOrientation(getOrientationFromRotation(image.imageInfo.rotationDegrees))
             .build()
@@ -107,8 +93,7 @@ class ImageClassifierHelper(
         val results = imageClassifier?.classify(tensorImage, imageProcessingOptions)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
         imageClassifierListener?.onResults(
-//            results,
-            outputs,
+            results,
             inferenceTime
         )
     }
@@ -127,7 +112,7 @@ class ImageClassifierHelper(
     interface ClassifierListener {
         fun onError(error: String)
         fun onResults(
-            results: MutableList<Category>,
+            results: List<Classifications>?,
             inferenceTime: Long
         )
     }
