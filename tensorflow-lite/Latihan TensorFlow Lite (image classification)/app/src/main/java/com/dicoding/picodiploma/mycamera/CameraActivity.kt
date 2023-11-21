@@ -39,33 +39,36 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        imageClassifierHelper =
-            ImageClassifierHelper(
-                context = this,
-                imageClassifierListener = object : ImageClassifierHelper.ClassifierListener {
-                    override fun onError(error: String) {
-                        runOnUiThread {
-                            Toast.makeText(this@CameraActivity, error, Toast.LENGTH_SHORT).show()
-                        }
+        imageClassifierHelper = ImageClassifierHelper(
+            context = this,
+            imageClassifierListener = object : ImageClassifierHelper.ClassifierListener {
+                override fun onError(error: String) {
+                    runOnUiThread {
+                        Toast.makeText(this@CameraActivity, error, Toast.LENGTH_SHORT).show()
                     }
+                }
 
-                    override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
-                        runOnUiThread {
-                            results?.let { it ->
-                                if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
-                                    println(it)
-                                    val sortedCategories =
-                                        it[0].categories.sortedByDescending { it?.score }
-                                    val displayResult =
-                                        sortedCategories.joinToString("\n") {
-                                            "${it.label} " + NumberFormat.getPercentInstance().format(it.score).trim()
-                                        }
-                                    binding.tvResult.text = displayResult
-                                }
+                override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
+                    runOnUiThread {
+                        results?.let { it ->
+                            if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
+                                println(it)
+                                val sortedCategories =
+                                    it[0].categories.sortedByDescending { it?.score }
+                                val displayResult =
+                                    sortedCategories.joinToString("\n") {
+                                        "${it.label} " + NumberFormat.getPercentInstance()
+                                            .format(it.score).trim()
+                                    }
+                                binding.tvResult.text = displayResult
+                            } else {
+                                binding.tvResult.text = ""
                             }
                         }
                     }
-                })
+                }
+            }
+        )
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -73,28 +76,22 @@ class CameraActivity : AppCompatActivity() {
             val resolutionSelector = ResolutionSelector.Builder()
                 .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
                 .build()
-            val imageAnalyzer =
-                ImageAnalysis.Builder()
-                    .setResolutionSelector(
-                        resolutionSelector
-                    )
-                    .setTargetRotation(binding.viewFinder.display.rotation)
-                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                    .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
-                    .build()
-                    // The analyzer can then be assigned to the instance
-                    .also {
-                        it.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
-                            // Pass Bitmap and rotation to the image classifier helper for processing and classification
-                            imageClassifierHelper.classify(image)
-                        }
-                    }
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
+            val imageAnalyzer = ImageAnalysis.Builder()
+                .setResolutionSelector(resolutionSelector)
+                .setTargetRotation(binding.viewFinder.display.rotation)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
                 .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+                    it.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
+                        imageClassifierHelper.classify(image)
+                    }
                 }
+
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            val preview = Preview.Builder().build().also {
+                it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+            }
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
