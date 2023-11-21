@@ -41,7 +41,7 @@ class CameraActivity : AppCompatActivity() {
     private fun startCamera() {
         imageClassifierHelper = ImageClassifierHelper(
             context = this,
-            imageClassifierListener = object : ImageClassifierHelper.ClassifierListener {
+            classifierListener = object : ImageClassifierHelper.ClassifierListener {
                 override fun onError(error: String) {
                     runOnUiThread {
                         Toast.makeText(this@CameraActivity, error, Toast.LENGTH_SHORT).show()

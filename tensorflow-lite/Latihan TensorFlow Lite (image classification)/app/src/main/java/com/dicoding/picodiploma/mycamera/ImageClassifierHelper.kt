@@ -21,7 +21,7 @@ class ImageClassifierHelper(
     var maxResults: Int = 3,
     val modelName: String = "1.tflite",
     val context: Context,
-    val imageClassifierListener: ClassifierListener?
+    val classifierListener: ClassifierListener?
 ) {
     private var imageClassifier: ImageClassifier? = null
 
@@ -43,7 +43,7 @@ class ImageClassifierHelper(
                 optionsBuilder.build()
             )
         } catch (e: IllegalStateException) {
-            imageClassifierListener?.onError(context.getString(R.string.image_classifier_failed))
+            classifierListener?.onError(context.getString(R.string.image_classifier_failed))
             Log.e(TAG, e.message.toString())
         }
     }
@@ -67,7 +67,7 @@ class ImageClassifierHelper(
         var inferenceTime = SystemClock.uptimeMillis()
         val results = imageClassifier?.classify(tensorImage, imageProcessingOptions)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-        imageClassifierListener?.onResults(
+        classifierListener?.onResults(
             results,
             inferenceTime
         )
