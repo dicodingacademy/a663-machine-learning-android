@@ -84,7 +84,7 @@ class CameraActivity : AppCompatActivity() {
                 .build()
                 .also {
                     it.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
-                        imageClassifierHelper.classify(image)
+                        imageClassifierHelper.classifyImage(image)
                     }
                 }
 

@@ -19,7 +19,6 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 class ImageClassifierHelper(
     var threshold: Float = 0.1f,
     var maxResults: Int = 3,
-    var numThreads: Int = 4,
     val modelName: String = "1.tflite",
     val context: Context,
     val imageClassifierListener: ClassifierListener?
@@ -34,7 +33,7 @@ class ImageClassifierHelper(
         val optionsBuilder = ImageClassifier.ImageClassifierOptions.builder()
             .setScoreThreshold(threshold)
             .setMaxResults(maxResults)
-        val baseOptionsBuilder = BaseOptions.builder().setNumThreads(numThreads)
+        val baseOptionsBuilder = BaseOptions.builder().setNumThreads(4)
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
         try {
@@ -49,7 +48,7 @@ class ImageClassifierHelper(
         }
     }
 
-    fun classify(image: ImageProxy) {
+    fun classifyImage(image: ImageProxy) {
         if (imageClassifier == null) {
             setupImageClassifier()
         }
