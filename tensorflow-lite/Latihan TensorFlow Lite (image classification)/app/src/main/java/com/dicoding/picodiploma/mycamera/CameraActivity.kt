@@ -61,8 +61,10 @@ class CameraActivity : AppCompatActivity() {
                                             .format(it.score).trim()
                                     }
                                 binding.tvResult.text = displayResult
+                                binding.tvInferenceTime.text = "$inferenceTime ms"
                             } else {
                                 binding.tvResult.text = ""
+                                binding.tvInferenceTime.text = ""
                             }
                         }
                     }
