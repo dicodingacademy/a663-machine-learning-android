@@ -15,7 +15,7 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.mycamera.databinding.ActivityCameraBinding
-import org.tensorflow.lite.task.vision.classifier.Classifications
+import org.tensorflow.lite.task.gms.vision.classifier.Classifications
 import java.text.NumberFormat
 import java.util.concurrent.Executors
 
@@ -61,8 +61,10 @@ class CameraActivity : AppCompatActivity() {
                                             .format(it.score).trim()
                                     }
                                 binding.tvResult.text = displayResult
+                                binding.tvInferenceTime.text = "$inferenceTime ms"
                             } else {
                                 binding.tvResult.text = ""
+                                binding.tvInferenceTime.text = ""
                             }
                         }
                     }
@@ -80,7 +82,7 @@ class CameraActivity : AppCompatActivity() {
                 .setResolutionSelector(resolutionSelector)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_YUV_420_888)
+                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
                 .also {
                     it.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
