@@ -13,20 +13,21 @@ import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
+import org.tensorflow.lite.support.image.ops.Rot90Op
 import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.core.vision.ImageProcessingOptions
 import org.tensorflow.lite.task.gms.vision.TfLiteVision
-import org.tensorflow.lite.task.gms.vision.classifier.Classifications
-import org.tensorflow.lite.task.gms.vision.classifier.ImageClassifier
+import org.tensorflow.lite.task.gms.vision.detector.Detection
+import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
 
 class ImageClassifierHelper(
-    var threshold: Float = 0.1f,
+    var threshold: Float = 0.5f,
     var maxResults: Int = 3,
     val modelName: String = "1.tflite",
     val context: Context,
     val classifierListener: ClassifierListener?
 ) {
-    private var imageClassifier: ImageClassifier? = null
+    private var imageClassifier: ObjectDetector? = null
 
     init {
         TfLiteGpu.isGpuDelegateAvailable(context).onSuccessTask { gpuAvailable ->
@@ -43,14 +44,14 @@ class ImageClassifierHelper(
     }
 
     private fun setupImageClassifier() {
-        val optionsBuilder = ImageClassifier.ImageClassifierOptions.builder()
+        val optionsBuilder = ObjectDetector.ObjectDetectorOptions.builder()
             .setScoreThreshold(threshold)
             .setMaxResults(maxResults)
         val baseOptionsBuilder = BaseOptions.builder().setNumThreads(4)
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
         try {
-            imageClassifier = ImageClassifier.createFromFileAndOptions(
+            imageClassifier = ObjectDetector.createFromFileAndOptions(
                 context,
                 modelName,
                 optionsBuilder.build()
@@ -75,22 +76,25 @@ class ImageClassifierHelper(
         }
 
         val imageProcessor = ImageProcessor.Builder()
-            .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-            .add(CastOp(DataType.UINT8))
+//            .add(ResizeOp(320, 320, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
+//            .add(CastOp(DataType.FLOAT32))
+            .add(Rot90Op(-image.imageInfo.rotationDegrees / 90))
             .build()
 
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(toBitmap(image)))
 
         val imageProcessingOptions = ImageProcessingOptions.builder()
-            .setOrientation(getOrientationFromRotation(image.imageInfo.rotationDegrees))
+//            .setOrientation(getOrientationFromRotation(image.imageInfo.rotationDegrees))
             .build()
 
         var inferenceTime = SystemClock.uptimeMillis()
-        val results = imageClassifier?.classify(tensorImage, imageProcessingOptions)
+        val results = imageClassifier?.detect(tensorImage, imageProcessingOptions)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
         classifierListener?.onResults(
             results,
-            inferenceTime
+            inferenceTime,
+            tensorImage.height,
+            tensorImage.width
         )
     }
 
@@ -117,8 +121,10 @@ class ImageClassifierHelper(
     interface ClassifierListener {
         fun onError(error: String)
         fun onResults(
-            results: List<Classifications>?,
-            inferenceTime: Long
+            results: MutableList<Detection>?,
+            inferenceTime: Long,
+            imageHeight: Int,
+            imageWidth: Int
         )
     }
 
