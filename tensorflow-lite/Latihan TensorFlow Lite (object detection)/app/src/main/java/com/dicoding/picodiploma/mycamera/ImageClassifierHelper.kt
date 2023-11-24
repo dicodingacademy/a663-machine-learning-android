@@ -22,7 +22,7 @@ import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
 
 class ImageClassifierHelper(
     var threshold: Float = 0.5f,
-    var maxResults: Int = 3,
+    var maxResults: Int = 5,
     val modelName: String = "1.tflite",
     val context: Context,
     val classifierListener: ClassifierListener?
@@ -76,19 +76,13 @@ class ImageClassifierHelper(
         }
 
         val imageProcessor = ImageProcessor.Builder()
-//            .add(ResizeOp(320, 320, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-//            .add(CastOp(DataType.FLOAT32))
             .add(Rot90Op(-image.imageInfo.rotationDegrees / 90))
             .build()
 
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(toBitmap(image)))
 
-        val imageProcessingOptions = ImageProcessingOptions.builder()
-//            .setOrientation(getOrientationFromRotation(image.imageInfo.rotationDegrees))
-            .build()
-
         var inferenceTime = SystemClock.uptimeMillis()
-        val results = imageClassifier?.detect(tensorImage, imageProcessingOptions)
+        val results = imageClassifier?.detect(tensorImage)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
         classifierListener?.onResults(
             results,

@@ -3,10 +3,12 @@ package com.dicoding.picodiploma.mycamera
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -17,7 +19,6 @@ import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.mycamera.databinding.ActivityCameraBinding
 import org.tensorflow.lite.task.gms.vision.detector.Detection
 import java.text.NumberFormat
-import java.util.LinkedList
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
@@ -61,17 +62,21 @@ class CameraActivity : AppCompatActivity() {
                                 binding.overlay.setResults(
                                     results, imageHeight, imageWidth
                                 )
-//                                val sortedCategories =
-//                                    it[0].categories.sortedByDescending { it?.score }
-//                                val displayResult = sortedCategories.joinToString("\n") {
-//                                    "${it.label} " + NumberFormat.getPercentInstance()
-//                                        .format(it.score).trim()
-//                                }
-//                                binding.tvResult.text = displayResult
-//                                binding.tvInferenceTime.text = "$inferenceTime ms"
-//                            } else {
-//                                binding.tvResult.text = ""
-//                                binding.tvInferenceTime.text = ""
+
+                                val builder = StringBuilder()
+                                for (result in results) {
+                                    val displayResult =
+                                        "${result.categories[0].label} " + NumberFormat.getPercentInstance()
+                                            .format(result.categories[0].score).trim()
+                                    builder.append("$displayResult \n")
+                                }
+
+                                binding.tvResult.text = builder.toString()
+                                binding.tvResult.visibility = View.VISIBLE
+                                binding.tvInferenceTime.text = "$inferenceTime ms"
+                            } else {
+                                binding.tvResult.text = ""
+                                binding.tvInferenceTime.text = ""
                             }
                         }
 
@@ -85,7 +90,7 @@ class CameraActivity : AppCompatActivity() {
 
         cameraProviderFuture.addListener({
             val resolutionSelector = ResolutionSelector.Builder()
-                .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
+                .setAspectRatioStrategy(AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY)
                 .build()
             val imageAnalyzer = ImageAnalysis.Builder().setResolutionSelector(resolutionSelector)
                 .setTargetRotation(binding.viewFinder.display.rotation)
