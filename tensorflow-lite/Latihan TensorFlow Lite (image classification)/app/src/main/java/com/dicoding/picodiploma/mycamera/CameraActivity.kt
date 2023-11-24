@@ -76,7 +76,7 @@ class CameraActivity : AppCompatActivity() {
 
         cameraProviderFuture.addListener({
             val resolutionSelector = ResolutionSelector.Builder()
-                .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
+                .setAspectRatioStrategy(AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY)
                 .build()
             val imageAnalyzer = ImageAnalysis.Builder()
                 .setResolutionSelector(resolutionSelector)
