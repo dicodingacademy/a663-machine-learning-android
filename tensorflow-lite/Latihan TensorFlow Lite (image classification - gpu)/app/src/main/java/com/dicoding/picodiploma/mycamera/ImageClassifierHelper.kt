@@ -38,7 +38,7 @@ class ImageClassifierHelper(
         }.addOnSuccessListener {
             setupImageClassifier()
         }.addOnFailureListener {
-            classifierListener?.onError(context.getString(R.string.image_classifier_failed))
+            classifierListener?.onError(context.getString(R.string.tflitevision_is_not_initialized_yet))
         }
     }
 
