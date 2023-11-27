@@ -8,7 +8,6 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -24,7 +23,7 @@ import java.util.concurrent.Executors
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    private lateinit var imageClassifierHelper: ImageClassifierHelper
+    private lateinit var objecDetectorHelper: ObjecDetectortHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +40,9 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        imageClassifierHelper = ImageClassifierHelper(context = this,
-            classifierListener = object : ImageClassifierHelper.ClassifierListener {
+        objecDetectorHelper = ObjecDetectortHelper(
+            context = this,
+            detectorListener = object : ObjecDetectortHelper.DetectorListener {
                 override fun onError(error: String) {
                     runOnUiThread {
                         Toast.makeText(this@CameraActivity, error, Toast.LENGTH_SHORT).show()
@@ -56,7 +56,7 @@ class CameraActivity : AppCompatActivity() {
                     imageWidth: Int
                 ) {
                     runOnUiThread {
-                        results?.let { it ->
+                        results?.let {
                             if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
                                 println(it)
                                 binding.overlay.setResults(
@@ -64,7 +64,7 @@ class CameraActivity : AppCompatActivity() {
                                 )
 
                                 val builder = StringBuilder()
-                                for (result in results) {
+                                for (result in it) {
                                     val displayResult =
                                         "${result.categories[0].label} " + NumberFormat.getPercentInstance()
                                             .format(result.categories[0].score).trim()
@@ -77,6 +77,7 @@ class CameraActivity : AppCompatActivity() {
                             } else {
                                 binding.tvResult.text = ""
                                 binding.tvInferenceTime.text = ""
+                                binding.overlay.clear()
                             }
                         }
 
@@ -97,7 +98,7 @@ class CameraActivity : AppCompatActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888).build().also {
                     it.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
-                        imageClassifierHelper.classifyImage(image)
+                        objecDetectorHelper.detectObject(image)
                     }
                 }
 
