@@ -59,12 +59,10 @@ class CameraActivity : AppCompatActivity() {
                         results?.let {
                             if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
                                 println(it)
-                                binding.overlay.setResults(
-                                    results, imageHeight, imageWidth
-                                )
+                                binding.overlay.setResults(results, imageHeight, imageWidth)
 
                                 val builder = StringBuilder()
-                                for (result in it) {
+                                for (result in results) {
                                     val displayResult =
                                         "${result.categories[0].label} " + NumberFormat.getPercentInstance()
                                             .format(result.categories[0].score).trim()
@@ -72,12 +70,11 @@ class CameraActivity : AppCompatActivity() {
                                 }
 
                                 binding.tvResult.text = builder.toString()
-                                binding.tvResult.visibility = View.VISIBLE
                                 binding.tvInferenceTime.text = "$inferenceTime ms"
                             } else {
+                                binding.overlay.clear()
                                 binding.tvResult.text = ""
                                 binding.tvInferenceTime.text = ""
-                                binding.overlay.clear()
                             }
                         }
 
@@ -85,7 +82,8 @@ class CameraActivity : AppCompatActivity() {
                         binding.overlay.invalidate()
                     }
                 }
-            })
+            }
+        )
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 

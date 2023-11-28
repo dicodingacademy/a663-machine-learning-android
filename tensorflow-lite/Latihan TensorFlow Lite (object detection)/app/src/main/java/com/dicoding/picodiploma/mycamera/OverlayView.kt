@@ -10,16 +10,17 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import org.tensorflow.lite.task.gms.vision.detector.Detection
+import java.text.NumberFormat
 import java.util.LinkedList
 import kotlin.math.max
 
 class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    private var results: List<Detection> = LinkedList<Detection>()
     private var boxPaint = Paint()
     private var textBackgroundPaint = Paint()
     private var textPaint = Paint()
 
+    private var results: List<Detection> = LinkedList<Detection>()
     private var scaleFactor: Float = 1f
 
     private var bounds = Rect()
@@ -28,15 +29,11 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
         initPaints()
     }
 
-    fun clear() {
-        textPaint.reset()
-        textBackgroundPaint.reset()
-        boxPaint.reset()
-        invalidate()
-        initPaints()
-    }
-
     private fun initPaints() {
+        boxPaint.color = ContextCompat.getColor(context!!, R.color.bounding_box_color)
+        boxPaint.strokeWidth = 8F
+        boxPaint.style = Paint.Style.STROKE
+
         textBackgroundPaint.color = Color.BLACK
         textBackgroundPaint.style = Paint.Style.FILL
         textBackgroundPaint.textSize = 50f
@@ -44,10 +41,18 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
         textPaint.color = Color.WHITE
         textPaint.style = Paint.Style.FILL
         textPaint.textSize = 50f
+    }
 
-        boxPaint.color = ContextCompat.getColor(context!!, R.color.bounding_box_color)
-        boxPaint.strokeWidth = 8F
-        boxPaint.style = Paint.Style.STROKE
+    fun setResults(
+        detectionResults: MutableList<Detection>,
+        imageHeight: Int,
+        imageWidth: Int,
+    ) {
+        results = detectionResults
+
+        // PreviewView is in FILL_START mode. So we need to scale up the bounding box to match with
+        // the size that the captured images will be displayed.
+        scaleFactor = max(width * 1f / imageWidth, height * 1f / imageHeight)
     }
 
     override fun draw(canvas: Canvas) {
@@ -56,19 +61,18 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
         for (result in results) {
             val boundingBox = result.boundingBox
 
-            val top = boundingBox.top * scaleFactor
-            val bottom = boundingBox.bottom * scaleFactor
             val left = boundingBox.left * scaleFactor
+            val top = boundingBox.top * scaleFactor
             val right = boundingBox.right * scaleFactor
+            val bottom = boundingBox.bottom * scaleFactor
 
             // Draw bounding box around detected objects
             val drawableRect = RectF(left, top, right, bottom)
             canvas.drawRect(drawableRect, boxPaint)
 
             // Create text to display alongside detected objects
-            val drawableText =
-                result.categories[0].label + " " +
-                        String.format("%.2f", result.categories[0].score)
+            val drawableText = "${result.categories[0].label} " +
+                    NumberFormat.getPercentInstance().format(result.categories[0].score)
 
             // Draw rect behind display text
             textBackgroundPaint.getTextBounds(drawableText, 0, drawableText.length, bounds)
@@ -87,16 +91,12 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
         }
     }
 
-    fun setResults(
-        detectionResults: MutableList<Detection>,
-        imageHeight: Int,
-        imageWidth: Int,
-    ) {
-        results = detectionResults
-
-        // PreviewView is in FILL_START mode. So we need to scale up the bounding box to match with
-        // the size that the captured images will be displayed.
-        scaleFactor = max(width * 1f / imageWidth, height * 1f / imageHeight)
+    fun clear() {
+        boxPaint.reset()
+        textBackgroundPaint.reset()
+        textPaint.reset()
+        invalidate()
+        initPaints()
     }
 
     companion object {
