@@ -59,7 +59,9 @@ class CameraActivity : AppCompatActivity() {
                         results?.let {
                             if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
                                 println(it)
-                                binding.overlay.setResults(results, imageHeight, imageWidth)
+                                binding.overlay.setResults(
+                                    results, imageHeight, imageWidth
+                                )
 
                                 val builder = StringBuilder()
                                 for (result in results) {
