@@ -3,7 +3,6 @@ package com.dicoding.picodiploma.mycamera
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -23,7 +22,7 @@ import java.util.concurrent.Executors
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    private lateinit var objecDetectorHelper: ObjecDetectortHelper
+    private lateinit var objectDetectorHelper: ObjectDetectorHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +39,9 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        objecDetectorHelper = ObjecDetectortHelper(
+        objectDetectorHelper = ObjectDetectorHelper(
             context = this,
-            detectorListener = object : ObjecDetectortHelper.DetectorListener {
+            detectorListener = object : ObjectDetectorHelper.DetectorListener {
                 override fun onError(error: String) {
                     runOnUiThread {
                         Toast.makeText(this@CameraActivity, error, Toast.LENGTH_SHORT).show()
@@ -98,7 +97,7 @@ class CameraActivity : AppCompatActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888).build().also {
                     it.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
-                        objecDetectorHelper.detectObject(image)
+                        objectDetectorHelper.detectObject(image)
                     }
                 }
 
