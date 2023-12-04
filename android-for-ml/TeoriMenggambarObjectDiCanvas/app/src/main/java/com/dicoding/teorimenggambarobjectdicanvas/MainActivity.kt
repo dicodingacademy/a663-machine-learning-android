@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.Region
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,39 +22,37 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mBitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888)
-        binding.myImageView.setImageBitmap(mBitmap)
+        val bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888)
+        binding.myImageView.setImageBitmap(bitmap)
 
-        val mCanvas = Canvas(mBitmap)
-        mCanvas.drawColor(ResourcesCompat.getColor(resources, R.color.blue_500, null))
+        val canvas = Canvas(bitmap)
+        canvas.drawColor(ResourcesCompat.getColor(resources, R.color.blue_500, null))
 
-        val mRect = Rect()
-        mRect.set(mBitmap.width/2 - 100, mBitmap.height/2 - 100, mBitmap.width/2 + 100, mBitmap.height/2 + 100)
+        val paint = Paint()
 
-        mCanvas.save() // menyimpan pengaturan sebelumnya.
+        canvas.save() // menyimpan pengaturan sebelumnya.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            mCanvas.clipRect(mRect)
+            canvas.clipRect(bitmap.width/2 - 100F, bitmap.height/2 - 100F, bitmap.width/2 + 100F, bitmap.height/2 + 100F, Region.Op.DIFFERENCE)
         } else {
-            mCanvas.clipOutRect(mRect)
+            canvas.clipOutRect(bitmap.width/2 - 100, bitmap.height/2 - 100, bitmap.width/2 + 100, bitmap.height/2 + 100)
         }
 
-        val mPaint = Paint()
-        mPaint.color = ResourcesCompat.getColor(resources, R.color.pink_200, null)
-        mCanvas.drawCircle((mBitmap.width/2).toFloat(), (mBitmap.height/2).toFloat(), 200f, mPaint)
+        paint.color = ResourcesCompat.getColor(resources, R.color.pink_200, null)
+        canvas.drawCircle((bitmap.width/2).toFloat(), (bitmap.height/2).toFloat(), 200f, paint)
+        canvas.restore() // mengembalikan pengaturan yang telah tersimpan.
 
-        mCanvas.restore() // mengembalikan pengaturan yang telah tersimpan.
-
-        val mPaintText =  Paint(Paint.FAKE_BOLD_TEXT_FLAG)
-        mPaintText.textSize = 20F
-        mPaintText.color = ResourcesCompat.getColor(resources, R.color.white, null)
+        val paintText =  Paint(Paint.FAKE_BOLD_TEXT_FLAG)
+        paintText.textSize = 20F
+        paintText.color = ResourcesCompat.getColor(resources, R.color.white, null)
 
         val text = "Selamat Datang!"
-        val mBounds = Rect()
-        mPaintText.getTextBounds(text, 0, text.length, mBounds)
+        val bounds = Rect()
+        paintText.getTextBounds(text, 0, text.length, bounds)
 
-        val x: Int = mBitmap.width/2 - mBounds.centerX()
-        val y: Int = mBitmap.height/2 - mBounds.centerY()
-        mCanvas.drawText(text, x.toFloat(), y.toFloat(), mPaintText)
+        val x: Int = bitmap.width/2 - bounds.centerX()
+        val y: Int = bitmap.height/2 - bounds.centerY()
+        canvas.drawText(text, x.toFloat(), y.toFloat(), paintText)
+
 
     }
 }
