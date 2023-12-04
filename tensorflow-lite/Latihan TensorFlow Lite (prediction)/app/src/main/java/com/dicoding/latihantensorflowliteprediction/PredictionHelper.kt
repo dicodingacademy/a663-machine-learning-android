@@ -41,7 +41,6 @@ class PredictionHelper(
         try {
             val buffer: ByteBuffer = loadModelFile(context.assets, modelName)
             initializeInterpreter(buffer)
-            Log.v(TAG, "TFLite model loaded.")
         } catch (ioException: IOException) {
             ioException.printStackTrace()
         }
