@@ -36,10 +36,13 @@
         android:importantForAutofill="no"
         android:inputType="number"
         android:labelFor="@id/tvSales"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        tools:ignore="LabelFor" />
 
     <Button
         android:id="@+id/btnPredict"
