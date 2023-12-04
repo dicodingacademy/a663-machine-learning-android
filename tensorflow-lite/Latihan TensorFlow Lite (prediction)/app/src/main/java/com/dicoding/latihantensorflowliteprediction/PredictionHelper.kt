@@ -31,19 +31,31 @@ class PredictionHelper(
             }
             TfLite.initialize(context, optionsBuilder.build())
         }.addOnSuccessListener {
-            initializeInterpreter()
+            loadLocalModel()
         }.addOnFailureListener {
             onError(context.getString(R.string.tflite_is_not_initialized_yet))
         }
     }
 
-    private fun initializeInterpreter() {
+    private fun loadLocalModel() {
         try {
             val buffer: ByteBuffer = loadModelFile(context.assets, modelName)
+            initializeInterpreter(buffer)
+            Log.v(TAG, "TFLite model loaded.")
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+        }
+    }
+
+    private fun initializeInterpreter(model: Any) {
+        interpreter?.close()
+        try {
             val options = InterpreterApi.Options()
                 .setRuntime(InterpreterApi.Options.TfLiteRuntime.FROM_SYSTEM_ONLY)
                 .addDelegateFactory(GpuDelegateFactory())
-            interpreter = InterpreterApi.create(buffer, options)
+            if (model is ByteBuffer) {
+                interpreter = InterpreterApi.create(model, options)
+            }
         } catch (e: Exception) {
             onError(e.message.toString())
             Log.e(TAG, e.message.toString())
