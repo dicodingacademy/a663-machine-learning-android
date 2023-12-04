@@ -19,11 +19,10 @@ class MainActivity : AppCompatActivity() {
             onResult = { result ->
                 binding.tvResult.text = result
             },
-            onError = {errorMessage ->
+            onError = { errorMessage ->
                 Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
             }
         )
-
         binding.btnPredict.setOnClickListener {
             val input = binding.edSales.text.toString()
             predictionHelper.predict(input)
