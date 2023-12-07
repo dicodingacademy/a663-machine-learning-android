@@ -53,4 +53,5 @@ dependencies {
     implementation("com.google.android.gms:play-services-tflite-gpu:16.2.0")
 
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-ml-modeldownloader:24.2.1")
 }

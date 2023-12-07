@@ -4,17 +4,32 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.dicoding.latihantensorflowliteprediction.databinding.ActivityMainBinding
+import com.google.firebase.ml.modeldownloader.CustomModel
+import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions
+import com.google.firebase.ml.modeldownloader.DownloadType
+import com.google.firebase.ml.modeldownloader.FirebaseModelDownloader
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var predictionHelper: PredictionHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val predictionHelper = PredictionHelper(
+        downloadModel()
+
+        binding.btnPredict.setOnClickListener {
+            val input = binding.edSales.text.toString()
+            predictionHelper.predict(input)
+        }
+    }
+
+    private fun initPredictionHelper(){
+        predictionHelper = PredictionHelper(
             context = this,
             onResult = { result ->
                 binding.tvResult.text = result
@@ -23,10 +38,32 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
             }
         )
-        binding.btnPredict.setOnClickListener {
-            val input = binding.edSales.text.toString()
-            predictionHelper.predict(input)
-        }
-
     }
+
+    @Synchronized
+    private fun downloadModel(){
+        val conditions = CustomModelDownloadConditions.Builder()
+            .requireWifi()
+            .build()
+        FirebaseModelDownloader.getInstance()
+            .getModel("Rice-Stock", DownloadType.LOCAL_MODEL, conditions)
+            .addOnSuccessListener { model: CustomModel? ->
+                try {
+
+                    initPredictionHelper() // initialize a prediction helper
+                } catch (e: IOException) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(R.string.model_initialization_failed),
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e: Exception? ->
+                Toast.makeText(
+                    this@MainActivity,
+                    getString(R.string.firebaseml_model_download_failed),
+                    Toast.LENGTH_SHORT).show()
+            }
+    }
+
 }
