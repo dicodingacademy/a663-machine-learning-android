@@ -15,7 +15,7 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.mycamera.databinding.ActivityCameraBinding
-import org.tensorflow.lite.task.vision.classifier.Classifications
+import com.google.mediapipe.tasks.components.containers.Classifications
 import java.text.NumberFormat
 import java.util.concurrent.Executors
 
@@ -51,14 +51,14 @@ class CameraActivity : AppCompatActivity() {
                 override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                     runOnUiThread {
                         results?.let { it ->
-                            if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
+                            if (it.isNotEmpty() && it[0].categories().isNotEmpty()) {
                                 println(it)
                                 val sortedCategories =
-                                    it[0].categories.sortedByDescending { it?.score }
+                                    it[0].categories().sortedByDescending { it?.score() }
                                 val displayResult =
                                     sortedCategories.joinToString("\n") {
-                                        "${it.label} " + NumberFormat.getPercentInstance()
-                                            .format(it.score).trim()
+                                        "${it.categoryName()} " + NumberFormat.getPercentInstance()
+                                            .format(it.score()).trim()
                                     }
                                 binding.tvResult.text = displayResult
                                 binding.tvInferenceTime.text = "$inferenceTime ms"
