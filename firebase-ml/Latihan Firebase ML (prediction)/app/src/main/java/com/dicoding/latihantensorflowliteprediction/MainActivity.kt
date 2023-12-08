@@ -8,6 +8,7 @@ import com.google.firebase.ml.modeldownloader.CustomModel
 import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions
 import com.google.firebase.ml.modeldownloader.DownloadType
 import com.google.firebase.ml.modeldownloader.FirebaseModelDownloader
+import java.io.File
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         downloadModel()
+        binding.btnPredict.isEnabled = false
 
         binding.btnPredict.setOnClickListener {
             val input = binding.edSales.text.toString()
@@ -28,9 +30,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initPredictionHelper(){
+    private fun initPredictionHelper(modelFile: File){
         predictionHelper = PredictionHelper(
             context = this,
+            modelFile = modelFile,
             onResult = { result ->
                 binding.tvResult.text = result
             },
@@ -47,10 +50,10 @@ class MainActivity : AppCompatActivity() {
             .build()
         FirebaseModelDownloader.getInstance()
             .getModel("Rice-Stock", DownloadType.LOCAL_MODEL, conditions)
-            .addOnSuccessListener { model: CustomModel? ->
+            .addOnSuccessListener { model: CustomModel ->
                 try {
-
-                    initPredictionHelper() // initialize a prediction helper
+                    binding.btnPredict.isEnabled = true
+                    initPredictionHelper(model.file!!)
                 } catch (e: IOException) {
                     Toast.makeText(
                         this@MainActivity,

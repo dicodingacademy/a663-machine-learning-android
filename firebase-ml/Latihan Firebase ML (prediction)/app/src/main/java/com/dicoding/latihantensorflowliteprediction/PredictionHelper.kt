@@ -8,6 +8,7 @@ import com.google.android.gms.tflite.gpu.support.TfLiteGpu
 import com.google.android.gms.tflite.java.TfLite
 import org.tensorflow.lite.InterpreterApi
 import org.tensorflow.lite.gpu.GpuDelegateFactory
+import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -16,6 +17,7 @@ import java.nio.channels.FileChannel
 
 class PredictionHelper(
     private val modelName: String = "rice_stock.tflite",
+    private val modelFile: File,
     val context: Context,
     private val onResult: (String) -> Unit,
     private val onError: (String) -> Unit,
@@ -39,8 +41,7 @@ class PredictionHelper(
 
     private fun loadLocalModel() {
         try {
-            val buffer: ByteBuffer = loadModelFile(context.assets, modelName)
-            initializeInterpreter(buffer)
+            initializeInterpreter(modelFile)
         } catch (ioException: IOException) {
             ioException.printStackTrace()
         }
@@ -53,6 +54,8 @@ class PredictionHelper(
                 .setRuntime(InterpreterApi.Options.TfLiteRuntime.FROM_SYSTEM_ONLY)
                 .addDelegateFactory(GpuDelegateFactory())
             if (model is ByteBuffer) {
+                interpreter = InterpreterApi.create(model, options)
+            } else if (model is File){
                 interpreter = InterpreterApi.create(model, options)
             }
         } catch (e: Exception) {
