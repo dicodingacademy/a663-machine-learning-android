@@ -104,23 +104,6 @@ class AudioClassifierHelper(
         audioClassifier?.classifyAsync(audioData, inferenceTime)
     }
 
-    fun classifyAudio(audioData: AudioData): ResultBundle? {
-        val startTime = SystemClock.uptimeMillis()
-        audioClassifier?.classify(audioData)
-            ?.also { audioClassificationResult ->
-                val inferenceTime = SystemClock.uptimeMillis() - startTime
-                return ResultBundle(
-                    listOf(audioClassificationResult),
-                    inferenceTime
-                )
-            }
-
-        // If audioClassifier?.classify() returns null, this is likely an error. Returning null
-        // to indicate this.
-        classifierListener?.onError("Audio classifier failed to classify.")
-        return null
-    }
-
     fun stopAudioClassification() {
         executor?.shutdownNow()
         audioClassifier?.close()
