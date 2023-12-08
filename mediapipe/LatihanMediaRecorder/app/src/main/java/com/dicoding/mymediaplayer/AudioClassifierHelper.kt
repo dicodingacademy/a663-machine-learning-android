@@ -36,22 +36,12 @@ class AudioClassifierHelper(
         initClassifier()
     }
 
-    @SuppressLint("MissingPermission")
     fun initClassifier() {
-        // Set general detection options, e.g. number of used threads
-        val baseOptionsBuilder = BaseOptions.builder()
-
-        baseOptionsBuilder.setModelAssetPath(modelName)
-
         try {
-            // Configures a set of parameters for the classifier and what results will be returned.
-            val baseOptions = baseOptionsBuilder.build()
-            val optionsBuilder =
-                AudioClassifier.AudioClassifierOptions.builder()
-                    .setScoreThreshold(threshold)
-                    .setMaxResults(maxResults)
-                    .setBaseOptions(baseOptions)
-                    .setRunningMode(runningMode)
+            val optionsBuilder = AudioClassifier.AudioClassifierOptions.builder()
+                .setScoreThreshold(threshold)
+                .setMaxResults(maxResults)
+                .setRunningMode(runningMode)
 
             if (runningMode == RunningMode.AUDIO_STREAM) {
                 optionsBuilder
@@ -59,35 +49,25 @@ class AudioClassifierHelper(
                     .setErrorListener(this::streamAudioErrorListener)
             }
 
-            val options = optionsBuilder.build()
+            val baseOptionsBuilder = BaseOptions.builder()
+                .setModelAssetPath(modelName)
+            optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
-            // Create the classifier and required supporting objects
-            audioClassifier =
-                AudioClassifier.createFromOptions(context, options)
+            audioClassifier = AudioClassifier.createFromOptions(context, optionsBuilder.build())
+
             if (runningMode == RunningMode.AUDIO_STREAM) {
-
-                recorder = audioClassifier!!.createAudioRecord(
+                recorder = audioClassifier?.createAudioRecord(
                     AudioFormat.CHANNEL_IN_DEFAULT,
                     SAMPLING_RATE_IN_HZ,
                     BUFFER_SIZE_IN_BYTES.toInt()
                 )
             }
         } catch (e: IllegalStateException) {
-            classifierListener?.onError(
-                "Audio Classifier failed to initialize. See error logs for details"
-            )
-
-            Log.e(
-                TAG, "MP task failed to load with error: " + e.message
-            )
+            classifierListener?.onError(context.getString(R.string.audio_classifier_failed))
+            Log.e(TAG, "MP task failed to load with error: " + e.message)
         } catch (e: RuntimeException) {
-            classifierListener?.onError(
-                "Audio Classifier failed to initialize. See error logs for details"
-            )
-
-            Log.e(
-                TAG, "MP task failed to load with error: " + e.message
-            )
+            classifierListener?.onError(context.getString(R.string.audio_classifier_failed))
+            Log.e(TAG, "MP task failed to load with error: " + e.message)
         }
     }
 
@@ -104,7 +84,6 @@ class AudioClassifierHelper(
         // For example, YAMNET expects 0.975 second length recordings.
         // This needs to be in milliseconds to avoid the required Long value dropping decimals.
         val lengthInMilliSeconds = ((REQUIRE_INPUT_BUFFER_SIZE * 1.0f) / SAMPLING_RATE_IN_HZ) * 1000
-
         val interval = (lengthInMilliSeconds * (1 - (overlap * 0.25))).toLong()
 
         executor?.scheduleAtFixedRate(
@@ -117,7 +96,7 @@ class AudioClassifierHelper(
 
     private fun classifyAudioAsync(audioRecord: AudioRecord) {
         val audioData = AudioData.create(
-            AudioDataFormat.create(recorder!!.getFormat()),  /* sampleCounts= */SAMPLING_RATE_IN_HZ
+            AudioDataFormat.create(recorder?.format), SAMPLING_RATE_IN_HZ
         )
         audioData.load(audioRecord)
 
