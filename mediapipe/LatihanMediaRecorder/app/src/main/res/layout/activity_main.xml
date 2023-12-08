@@ -54,6 +54,10 @@
             android:text="@string/btn_text_stop" />
     </LinearLayout>
 
-
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Result" />
 
 </LinearLayout>
