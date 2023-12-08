@@ -5,58 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="16dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_media_recorder" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_start_record"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_start"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/btn_text_record" />
-
-        <Button
-            android:id="@+id/btn_stop_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_text_stop" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_media_player" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_text_play" />
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="@string/btn_start" />
 
         <Button
             android:id="@+id/btn_stop"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/btn_text_stop" />
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="@string/btn_stop" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="24sp"
         android:layout_height="wrap_content"
         tools:text="Result" />
 

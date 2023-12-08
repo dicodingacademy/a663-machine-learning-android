@@ -14,8 +14,8 @@ import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.imageclassifier.ImageClassifier
 
 class ImageClassifierHelper(
-    var threshold: Float = 0.1f,
-    var maxResults: Int = 3,
+    val threshold: Float = 0.1f,
+    val maxResults: Int = 3,
     val modelName: String = "mobilenet_v1.tflite",
     val runningMode: RunningMode = RunningMode.LIVE_STREAM,
     val context: Context,
