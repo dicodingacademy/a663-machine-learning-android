@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 
 class MainActivity : AppCompatActivity() {
@@ -116,12 +115,8 @@ class MainActivity : AppCompatActivity() {
     private fun uploadImage() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
-            Log.d("Image File", "showImage: ${imageFile.path}")
-            val description = "Ini adalah deksripsi gambar"
-
+            Log.d("Image Classification File", "showImage: ${imageFile.path}")
             showLoading(true)
-
-            val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
             val multipartBody = MultipartBody.Part.createFormData(
                 "photo",
@@ -131,8 +126,16 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val apiService = ApiConfig.getApiService()
-                    val successResponse = apiService.uploadImage(multipartBody, requestBody)
-                    showToast(successResponse.message)
+                    val successResponse = apiService.uploadImage(multipartBody)
+                    successResponse.data?.apply {
+                        binding.resultTextView.text = if (isAboveThreshold == true) {
+                            showToast(successResponse.message)
+                            String.format("%s with %.2f%%", result, confidenceScore)
+                        } else {
+                            showToast("Model is predicted successfully but under threshold.")
+                            String.format("Please use the correct picture because  the confidence score is %.2f%%", confidenceScore)
+                        }
+                    }
                     showLoading(false)
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
@@ -148,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showToast(message: String) {
+    private fun showToast(message: String?) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 

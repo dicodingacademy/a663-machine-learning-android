@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">MyMediaPlayer</string>
-    <string name="btn_text_play">Play</string>
-    <string name="btn_text_pause">Pause</string>
-    <string name="btn_text_stop">Stop</string>
-    <string name="btn_text_record">Record</string>
-    <string name="text_media_player">Media Player</string>
-    <string name="text_media_recorder">Media Recorder</string>
-</resources>
