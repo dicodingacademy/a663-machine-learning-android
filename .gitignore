@@ -1,4 +1,3 @@
-
 android-for-ml/LatihanMediaPlayer/.idea/.name
 android-for-ml/LatihanMediaPlayer/.idea/compiler.xml
 android-for-ml/LatihanMediaPlayer/.idea/gradle.xml
@@ -33,3 +32,29 @@ android-for-ml/final-project-online-image-classification/.idea/misc.xml
 android-for-ml/final-project-online-image-classification/.idea/other.xml
 android-for-ml/final-project-online-image-classification/.idea/vcs.xml
 android-for-ml/starter-project-online-image-classification/.idea/misc.xml
+ml-kit/LatihanCamera (text recognizer)/.idea/vcs.xml
+ml-kit/LatihanCamera (text recognizer)/.idea/misc.xml
+ml-kit/LatihanCamera (text recognizer)/.idea/kotlinc.xml
+ml-kit/LatihanCamera (text recognizer)/.idea/gradle.xml
+ml-kit/LatihanCamera (text recognizer)/.idea/deploymentTargetDropDown.xml
+ml-kit/LatihanCamera (text recognizer)/.idea/compiler.xml
+ml-kit/LatihanCamera (text recognizer)/.idea/.name
+ml-kit/LatihanCamera (starter)/.idea/deploymentTargetDropDown.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/.name
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/compiler.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/deploymentTargetDropDown.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/gradle.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/kotlinc.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/misc.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/vcs.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/.name
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/compiler.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/deploymentTargetDropDown.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/gradle.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/kotlinc.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/misc.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/vcs.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/other.xml
+tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/migrations.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/migrations.xml
+tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/other.xml

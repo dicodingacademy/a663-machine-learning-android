@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Latihan TensorFlow Lite (prediction)</string>
+    <string name="rice_stock_predictor">Rice Stock Predictor</string>
+    <string name="sales_this_month">Isi penjualan bulan ini (dalam kg)</string>
+    <string name="predict">Prediksi Stok Bulan Depan</string>
+    <string name="tflite_is_not_initialized_yet">TfLite is not initialized yet</string>
+    <string name="no_tflite_interpreter_loaded">No TFLite interpreter loaded</string>
+</resources>
