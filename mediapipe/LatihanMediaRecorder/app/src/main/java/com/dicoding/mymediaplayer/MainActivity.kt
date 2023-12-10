@@ -9,14 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.dicoding.mymediaplayer.databinding.ActivityMainBinding
 import java.text.NumberFormat
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
     private var isRecording = false
     private lateinit var binding: ActivityMainBinding
-    private lateinit var backgroundExecutor: ExecutorService
     private lateinit var audioClassifierHelper: AudioClassifierHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,45 +21,42 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        requestPermissionsIfNeeded()
-        updateButtonStates()
         initializeAudioClassifierHelper()
         setClickListener()
+        updateButtonStates()
+        requestPermissionsIfNeeded()
     }
 
     private fun initializeAudioClassifierHelper() {
-        backgroundExecutor = Executors.newSingleThreadExecutor()
-        backgroundExecutor.execute {
-            audioClassifierHelper = AudioClassifierHelper(
-                context = this,
-                classifierListener = object : AudioClassifierHelper.ClassifierListener {
-                    override fun onError(error: String) {
-                        Toast.makeText(this@MainActivity, error, Toast.LENGTH_LONG).show()
-                    }
+        audioClassifierHelper = AudioClassifierHelper(
+            context = this,
+            classifierListener = object : AudioClassifierHelper.ClassifierListener {
+                override fun onError(error: String) {
+                    Toast.makeText(this@MainActivity, error, Toast.LENGTH_LONG).show()
+                }
 
-                    override fun onResult(resultBundle: AudioClassifierHelper.ResultBundle) {
-                        runOnUiThread {
-                            resultBundle.results[0].classificationResults().first().let { it ->
-                                if (it.classifications()[0].categories().isNotEmpty()) {
-                                    println(it)
-                                    val sortedCategories =
-                                        it.classifications()[0].categories()
-                                            .sortedByDescending { it?.score() }
-                                    val displayResult =
-                                        sortedCategories.joinToString("\n") {
-                                            "${it.categoryName()} " + NumberFormat.getPercentInstance()
-                                                .format(it.score()).trim()
-                                        }
-                                    binding.tvResult.text = displayResult
-                                } else {
-                                    binding.tvResult.text = ""
-                                }
+                override fun onResult(resultBundle: AudioClassifierHelper.ResultBundle) {
+                    runOnUiThread {
+                        resultBundle.results[0].classificationResults().first().let { it ->
+                            if (it.classifications()[0].categories().isNotEmpty()) {
+                                println(it)
+                                val sortedCategories =
+                                    it.classifications()[0].categories()
+                                        .sortedByDescending { it?.score() }
+                                val displayResult =
+                                    sortedCategories.joinToString("\n") {
+                                        "${it.categoryName()} " + NumberFormat.getPercentInstance()
+                                            .format(it.score()).trim()
+                                    }
+                                binding.tvResult.text = displayResult
+                            } else {
+                                binding.tvResult.text = ""
                             }
                         }
                     }
                 }
-            )
-        }
+            }
+        )
     }
 
     private fun setClickListener() {
@@ -85,23 +79,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (isRecording){
+        if (isRecording) {
             audioClassifierHelper.startAudioClassification()
         }
     }
 
     override fun onPause() {
         super.onPause()
-        backgroundExecutor.execute {
-            if (::audioClassifierHelper.isInitialized) {
-                audioClassifierHelper.stopAudioClassification()
-            }
+        if (::audioClassifierHelper.isInitialized) {
+            audioClassifierHelper.stopAudioClassification()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        backgroundExecutor.shutdown()
     }
 
     private fun requestPermissionsIfNeeded() {
