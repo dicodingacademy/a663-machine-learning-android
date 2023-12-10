@@ -72,6 +72,10 @@ class AudioClassifierHelper(
     }
 
     fun startAudioClassification() {
+        if (isClosed()) {
+            initClassifier()
+        }
+
         if (recorder?.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
             return
         }

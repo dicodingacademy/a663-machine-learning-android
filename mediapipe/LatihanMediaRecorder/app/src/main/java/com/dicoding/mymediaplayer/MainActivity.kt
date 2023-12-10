@@ -21,12 +21,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         requestPermissionsIfNeeded()
         updateButtonStates()
-        setClickListener()
         initializeAudioClassifierHelper()
+        setClickListener()
     }
 
     private fun initializeAudioClassifierHelper() {
@@ -84,10 +85,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        backgroundExecutor.execute {
-            if (audioClassifierHelper.isClosed()) {
-                audioClassifierHelper.initClassifier()
-            }
+        if (isRecording){
+            audioClassifierHelper.startAudioClassification()
         }
     }
 
