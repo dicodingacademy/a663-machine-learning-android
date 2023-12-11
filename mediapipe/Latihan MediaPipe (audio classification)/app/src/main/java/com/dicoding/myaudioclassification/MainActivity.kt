@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.dicoding.myaudioclassification.databinding.ActivityMainBinding
+import com.google.mediapipe.tasks.components.containers.Classifications
 import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {
@@ -35,14 +36,13 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, error, Toast.LENGTH_LONG).show()
                 }
 
-                override fun onResult(resultBundle: AudioClassifierHelper.ResultBundle) {
+                override fun onResults(results: List<Classifications>, inferenceTime: Long) {
                     runOnUiThread {
-                        resultBundle.results[0].classificationResults().first().let { it ->
-                            if (it.classifications()[0].categories().isNotEmpty()) {
+                        results.let { it ->
+                            if (it.isNotEmpty() && it[0].categories().isNotEmpty()) {
                                 println(it)
                                 val sortedCategories =
-                                    it.classifications()[0].categories()
-                                        .sortedByDescending { it?.score() }
+                                    it[0].categories().sortedByDescending { it?.score() }
                                 val displayResult =
                                     sortedCategories.joinToString("\n") {
                                         "${it.categoryName()} " + NumberFormat.getPercentInstance()

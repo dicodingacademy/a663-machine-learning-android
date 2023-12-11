@@ -10,6 +10,7 @@ import com.google.mediapipe.tasks.audio.audioclassifier.AudioClassifierResult
 import com.google.mediapipe.tasks.audio.core.RunningMode
 import com.google.mediapipe.tasks.components.containers.AudioData
 import com.google.mediapipe.tasks.components.containers.AudioData.AudioDataFormat
+import com.google.mediapipe.tasks.components.containers.Classifications
 import com.google.mediapipe.tasks.core.BaseOptions
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -24,9 +25,9 @@ class AudioClassifierHelper(
     var classifierListener: ClassifierListener? = null,
 ) {
 
+    private var audioClassifier: AudioClassifier? = null
     private var recorder: AudioRecord? = null
     private var executor: ScheduledThreadPoolExecutor? = null
-    private var audioClassifier: AudioClassifier? = null
     private val classifyRunnable = Runnable {
         recorder?.let { classifyAudioAsync(it) }
     }
@@ -35,7 +36,7 @@ class AudioClassifierHelper(
         initClassifier()
     }
 
-    fun initClassifier() {
+    private fun initClassifier() {
         try {
             val optionsBuilder = AudioClassifier.AudioClassifierOptions.builder()
                 .setScoreThreshold(threshold)
@@ -119,19 +120,15 @@ class AudioClassifierHelper(
     }
 
     private fun streamAudioResultListener(resultListener: AudioClassifierResult) {
-        classifierListener?.onResult(
-            ResultBundle(listOf(resultListener), 0)
+        classifierListener?.onResults(
+            resultListener.classificationResults().first().classifications(),
+            resultListener.timestampMs()
         )
     }
 
     private fun streamAudioErrorListener(e: RuntimeException) {
         classifierListener?.onError(e.message.toString())
     }
-
-    data class ResultBundle(
-        val results: List<AudioClassifierResult>,
-        val inferenceTime: Long,
-    )
 
     companion object {
         private const val TAG = "AudioClassifierHelper"
@@ -151,6 +148,9 @@ class AudioClassifierHelper(
 
     interface ClassifierListener {
         fun onError(error: String)
-        fun onResult(resultBundle: ResultBundle)
+        fun onResults(
+            results: List<Classifications>,
+            inferenceTime: Long
+        )
     }
 }
