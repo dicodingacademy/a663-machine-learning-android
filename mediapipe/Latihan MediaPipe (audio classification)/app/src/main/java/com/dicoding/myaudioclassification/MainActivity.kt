@@ -13,9 +13,9 @@ import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {
 
-    private var isRecording = false
     private lateinit var binding: ActivityMainBinding
     private lateinit var audioClassifierHelper: AudioClassifierHelper
+    private var isRecording = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
