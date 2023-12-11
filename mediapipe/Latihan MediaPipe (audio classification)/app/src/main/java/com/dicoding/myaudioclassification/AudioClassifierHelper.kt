@@ -28,9 +28,6 @@ class AudioClassifierHelper(
     private var audioClassifier: AudioClassifier? = null
     private var recorder: AudioRecord? = null
     private var executor: ScheduledThreadPoolExecutor? = null
-    private val classifyRunnable = Runnable {
-        recorder?.let { classifyAudioAsync(it) }
-    }
 
     init {
         initClassifier()
@@ -72,7 +69,7 @@ class AudioClassifierHelper(
     }
 
     fun startAudioClassification() {
-        if (isClosed()) {
+        if (audioClassifier == null) {
             initClassifier()
         }
 
@@ -82,6 +79,10 @@ class AudioClassifierHelper(
 
         recorder?.startRecording()
         executor = ScheduledThreadPoolExecutor(1)
+
+        val classifyRunnable = Runnable {
+            recorder?.let { classifyAudioAsync(it) }
+        }
 
         // Each model will expect a specific audio recording length. This formula calculates that
         // length using the input buffer size and tensor format sample rate.
@@ -115,10 +116,6 @@ class AudioClassifierHelper(
         recorder?.stop()
     }
 
-    fun isClosed(): Boolean {
-        return audioClassifier == null
-    }
-
     private fun streamAudioResultListener(resultListener: AudioClassifierResult) {
         classifierListener?.onResults(
             resultListener.classificationResults().first().classifications(),
@@ -134,14 +131,9 @@ class AudioClassifierHelper(
         private const val TAG = "AudioClassifierHelper"
 
         private const val SAMPLING_RATE_IN_HZ = 16000
-        private const val BUFFER_SIZE_FACTOR: Int = 2
         private const val EXPECTED_INPUT_LENGTH = 0.975F
-        private const val REQUIRE_INPUT_BUFFER_SIZE =
-            SAMPLING_RATE_IN_HZ * EXPECTED_INPUT_LENGTH
-
-        /**
-         * Size of the buffer where the audio data is stored by Android
-         */
+        private const val REQUIRE_INPUT_BUFFER_SIZE = SAMPLING_RATE_IN_HZ * EXPECTED_INPUT_LENGTH
+        private const val BUFFER_SIZE_FACTOR: Int = 2
         private const val BUFFER_SIZE_IN_BYTES =
             REQUIRE_INPUT_BUFFER_SIZE * Float.SIZE_BYTES * BUFFER_SIZE_FACTOR
     }
