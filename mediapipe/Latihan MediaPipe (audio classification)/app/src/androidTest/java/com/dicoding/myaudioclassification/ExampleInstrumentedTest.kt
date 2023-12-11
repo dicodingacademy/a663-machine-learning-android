@@ -1,4 +1,4 @@
-package com.dicoding.mymediaplayer
+package com.dicoding.myaudioclassification
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

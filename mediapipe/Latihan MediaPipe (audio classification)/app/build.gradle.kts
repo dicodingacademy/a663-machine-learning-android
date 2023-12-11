@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.dicoding.mymediaplayer"
+    namespace = "com.dicoding.myaudioclassification"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.dicoding.mymediaplayer"
+        applicationId = "com.dicoding.myaudioclassification"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

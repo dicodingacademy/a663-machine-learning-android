@@ -1,4 +1,4 @@
-package com.dicoding.mymediaplayer
+package com.dicoding.myaudioclassification
 
 import org.junit.Test
 

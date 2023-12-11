@@ -1,4 +1,4 @@
-package com.dicoding.mymediaplayer
+package com.dicoding.myaudioclassification
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.dicoding.mymediaplayer.databinding.ActivityMainBinding
+import com.dicoding.myaudioclassification.databinding.ActivityMainBinding
 import java.text.NumberFormat
 
 class MainActivity : AppCompatActivity() {

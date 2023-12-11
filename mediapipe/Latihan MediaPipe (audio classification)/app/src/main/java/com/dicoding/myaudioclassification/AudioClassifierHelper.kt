@@ -1,6 +1,5 @@
-package com.dicoding.mymediaplayer
+package com.dicoding.myaudioclassification
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioFormat
 import android.media.AudioRecord
