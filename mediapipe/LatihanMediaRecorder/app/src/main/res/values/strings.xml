@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Latihan Audio Classification</string>
+    <string name="app_name">Audio Classification</string>
     <string name="btn_start">Start</string>
     <string name="btn_stop">Stop</string>
     <string name="audio_classifier_failed">Audio Classifier failed to initialize. See error logs for details</string>
