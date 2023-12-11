@@ -20,7 +20,7 @@ class AudioClassifierHelper(
     val maxResults: Int = 3,
     val modelName: String = "yamnet.tflite",
     val runningMode: RunningMode = RunningMode.AUDIO_STREAM,
-    val overlap: Int = 2,
+    val overlap: Float = 0.5f,
     val context: Context,
     var classifierListener: ClassifierListener? = null,
 ) {
@@ -89,7 +89,7 @@ class AudioClassifierHelper(
         // For example, YAMNET expects 0.975 second length recordings.
         // This needs to be in milliseconds to avoid the required Long value dropping decimals.
         val lengthInMilliSeconds = ((REQUIRE_INPUT_BUFFER_SIZE * 1.0f) / SAMPLING_RATE_IN_HZ) * 1000
-        val interval = (lengthInMilliSeconds * (1 - (overlap * 0.25))).toLong()
+        val interval = (lengthInMilliSeconds * (1 - overlap)).toLong()
 
         executor?.scheduleAtFixedRate(
             classifyRunnable,
