@@ -127,9 +127,9 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val apiService = ApiConfig.getApiService()
                     val successResponse = apiService.uploadImage(multipartBody)
-                    successResponse.data?.apply {
+                    with(successResponse.data){
                         binding.resultTextView.text = if (isAboveThreshold == true) {
-                            showToast(successResponse.message)
+                            showToast(successResponse.message.toString())
                             String.format("%s with %.2f%%", result, confidenceScore)
                         } else {
                             showToast("Model is predicted successfully but under threshold.")
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
                     val errorResponse = Gson().fromJson(errorBody, FileUploadResponse::class.java)
-                    showToast(errorResponse.message)
+                    showToast(errorResponse.message.toString())
                     showLoading(false)
                 }
             }
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun showToast(message: String?) {
+    private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 

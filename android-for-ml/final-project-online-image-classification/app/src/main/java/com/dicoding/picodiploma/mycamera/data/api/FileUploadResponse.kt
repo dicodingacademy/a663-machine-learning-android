@@ -6,7 +6,7 @@ data class FileUploadResponse(
     @SerializedName("message")
     var message: String? = null,
     @SerializedName("data")
-    var data: Data? = Data()
+    var data: Data = Data()
 )
 
 data class Data(
