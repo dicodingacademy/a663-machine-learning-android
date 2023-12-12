@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">My Text Classification</string>
+    <string name="app_name">Text Classification</string>
+    <string name="classify">Classify</string>
 </resources>
