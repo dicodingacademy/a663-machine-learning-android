@@ -49,7 +49,6 @@ class ImageClassifierHelper(
 
         val baseOptionsBuilder = BaseOptions.builder()
             .setModelAssetPath(modelName)
-            .setDelegate(Delegate.GPU)
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
         try {
