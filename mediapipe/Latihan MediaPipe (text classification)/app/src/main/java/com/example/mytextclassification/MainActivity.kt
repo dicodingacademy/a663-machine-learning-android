@@ -33,8 +33,7 @@ class MainActivity : AppCompatActivity() {
 
                                 val displayResult =
                                     sortedCategories.joinToString("\n") {
-                                        val displayLabel = if (it.categoryName() == "1") "Positive " else "Negative "
-                                        displayLabel + NumberFormat.getPercentInstance()
+                                        "${it.categoryName()} " + NumberFormat.getPercentInstance()
                                             .format(it.score()).trim()
                                     }
                                 binding.tvResult.text = displayResult

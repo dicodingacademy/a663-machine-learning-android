@@ -9,7 +9,7 @@ import com.google.mediapipe.tasks.text.textclassifier.TextClassifier
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
 class TextClassifierHelper(
-    val modelName: String = "wordvec.tflite",
+    val modelName: String = "bert_classifier.tflite",
     val context: Context,
     var classifierListener: ClassifierListener? = null,
 ) {
