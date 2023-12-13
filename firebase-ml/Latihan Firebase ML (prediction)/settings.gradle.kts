@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Latihan TensorFlow Lite (prediction)"
+rootProject.name = "Latihan Firebase ML (prediction)"
 include(":app")
  

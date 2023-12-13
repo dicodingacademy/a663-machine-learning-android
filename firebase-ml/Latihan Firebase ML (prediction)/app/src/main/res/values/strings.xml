@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Latihan TensorFlow Lite (prediction)</string>
+    <string name="app_name">Latihan Firebase ML (prediction)</string>
     <string name="rice_stock_predictor">Rice Stock Predictor</string>
     <string name="sales_this_month">Isi penjualan bulan ini (dalam kg)</string>
     <string name="predict">Prediksi Stok Bulan Depan</string>
