@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Text Classification</string>
+    <string name="classify">Classify</string>
+    <string name="text_classifier_failed">Text classifier failed to initialize. See error logs for details.</string>
+</resources>

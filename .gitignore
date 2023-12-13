@@ -6,12 +6,6 @@ android-for-ml/LatihanMediaPlayer/.idea/kotlinc.xml
 android-for-ml/LatihanMediaPlayer/.idea/misc.xml
 android-for-ml/LatihanMediaPlayer/.idea/other.xml
 android-for-ml/LatihanMediaPlayer/.idea/vcs.xml
-android-for-ml/LatihanMediaPlayer/.idea/compiler.xml
-android-for-ml/LatihanMediaPlayer/.idea/gradle.xml
-android-for-ml/LatihanMediaPlayer/.idea/jarRepositories.xml
-android-for-ml/LatihanMediaPlayer/.idea/kotlinc.xml
-android-for-ml/LatihanMediaPlayer/.idea/misc.xml
-android-for-ml/LatihanMediaPlayer/.idea/vcs.xml
 android-for-ml/TeoriMenggambarObjectDiCanvas/.idea/vcs.xml
 android-for-ml/TeoriMenggambarObjectDiCanvas/.idea/other.xml
 android-for-ml/TeoriMenggambarObjectDiCanvas/.idea/misc.xml
@@ -58,3 +52,30 @@ tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/other
 tensorflow-lite/Latihan TensorFlow Lite (image classification - gpu)/.idea/migrations.xml
 tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/migrations.xml
 tensorflow-lite/Latihan TensorFlow Lite (object detection)/.idea/other.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/.name
+mediapipe/Latihan MediaPipe (image classification)/.idea/compiler.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/deploymentTargetDropDown.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/gradle.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/kotlinc.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/misc.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/vcs.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/migrations.xml
+tensorflow-lite/Latihan TensorFlow Lite (prediction)/.idea/gradle.xml
+tensorflow-lite/Latihan TensorFlow Lite (prediction)/.idea/deploymentTargetDropDown.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/.name
+mediapipe/Latihan MediaPipe (audio classification)/.idea/compiler.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/deploymentTargetDropDown.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/gradle.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/kotlinc.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/migrations.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/misc.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/other.xml
+mediapipe/Latihan MediaPipe (audio classification)/.idea/vcs.xml
+mediapipe/Latihan MediaPipe (text classification)/.idea/.name
+mediapipe/Latihan MediaPipe (text classification)/.idea/compiler.xml
+mediapipe/Latihan MediaPipe (text classification)/.idea/deploymentTargetDropDown.xml
+mediapipe/Latihan MediaPipe (text classification)/.idea/gradle.xml
+mediapipe/Latihan MediaPipe (text classification)/.idea/kotlinc.xml
+mediapipe/Latihan MediaPipe (text classification)/.idea/migrations.xml
+mediapipe/Latihan MediaPipe (text classification)/.idea/misc.xml
+mediapipe/Latihan MediaPipe (image classification)/.idea/inspectionProfiles/Project_Default.xml
