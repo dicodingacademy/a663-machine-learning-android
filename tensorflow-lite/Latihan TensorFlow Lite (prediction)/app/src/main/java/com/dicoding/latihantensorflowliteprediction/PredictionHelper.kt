@@ -62,6 +62,10 @@ class PredictionHelper(
     }
 
     fun predict(inputString: String) {
+        if (interpreter == null) {
+            return
+        }
+
         val inputArray = FloatArray(1)
         inputArray[0] = inputString.toFloat()
         val outputArray = Array(1) { FloatArray(1) }
