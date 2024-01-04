@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/tv_userMessageText"
         style="@style/Base.TextAppearance.AppCompat.Display1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:breakStrategy="balanced"
         android:textSize="14sp"
@@ -25,6 +25,8 @@
         android:textColor="@color/white"
         android:background="@drawable/rounded_rectangle_purple"
         android:padding="8dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintTop_toTopOf="@id/iv_userProfile"
         app:layout_constraintStart_toEndOf="@id/iv_userProfile"
         app:layout_constraintEnd_toEndOf="parent"
