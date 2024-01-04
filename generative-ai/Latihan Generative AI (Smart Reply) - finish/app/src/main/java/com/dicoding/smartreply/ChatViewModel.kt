@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.nl.smartreply.SmartReply
+import com.google.mlkit.nl.smartreply.SmartReplyGenerator
 import com.google.mlkit.nl.smartreply.SmartReplySuggestion
 import com.google.mlkit.nl.smartreply.SmartReplySuggestionResult
 import com.google.mlkit.nl.smartreply.TextMessage
@@ -21,7 +22,7 @@ class ChatViewModel: ViewModel() {
     private val _pretendingAsAnotherUser = MutableLiveData<Boolean>()
     val pretendingAsAnotherUser: LiveData<Boolean> = _pretendingAsAnotherUser
 
-    private val smartReply = SmartReply.getClient()
+    private val smartReply: SmartReplyGenerator = SmartReply.getClient()
 
     private val _smartReplyOptions = MediatorLiveData<List<SmartReplySuggestion>>()
     val smartReplyOptions: LiveData<List<SmartReplySuggestion>> = _smartReplyOptions
