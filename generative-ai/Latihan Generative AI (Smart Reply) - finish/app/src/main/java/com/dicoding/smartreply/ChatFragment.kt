@@ -60,25 +60,32 @@ class ChatFragment : Fragment() {
         optionsLayoutManager.orientation = RecyclerView.HORIZONTAL
         binding.rvSmartReplyOptions.layoutManager = optionsLayoutManager
 
-        val replyOptionsAdapter = ReplyOptionsAdapter(object: ReplyOptionsAdapter.OnItemClickCallback{
-            override fun onOptionClicked(optionText: String) {
-                binding.tietInputTextEditText.setText(optionText)
-            }
+        val replyOptionsAdapter =
+            ReplyOptionsAdapter(object : ReplyOptionsAdapter.OnItemClickCallback {
+                override fun onOptionClicked(optionText: String) {
+                    binding.tietInputTextEditText.setText(optionText)
+                }
 
-        })
+            })
         binding.rvSmartReplyOptions.adapter = replyOptionsAdapter
 
         chatViewModel = ViewModelProvider(this).get(ChatViewModel::class.java)
 
-        if (chatViewModel.chatHistory.value == null){
+        if (chatViewModel.chatHistory.value == null) {
             val chatHistory = ArrayList<Message>()
-            chatHistory.add(Message("Hello friend. How are you today?", false, System.currentTimeMillis()))
+            chatHistory.add(
+                Message(
+                    "Hello friend. How are you today?",
+                    false,
+                    System.currentTimeMillis()
+                )
+            )
             chatViewModel.setMessages(chatHistory)
         }
 
-        chatViewModel.chatHistory.observe(viewLifecycleOwner){ messages ->
+        chatViewModel.chatHistory.observe(viewLifecycleOwner) { messages ->
             chatAdapter.setChatHistory(messages)
-            if (chatAdapter.itemCount > 0){
+            if (chatAdapter.itemCount > 0) {
                 binding.rvChatHistory.smoothScrollToPosition(chatAdapter.itemCount - 1)
             }
         }
@@ -87,17 +94,27 @@ class ChatFragment : Fragment() {
             replyOptionsAdapter.setReplyOptions(options)
         }
 
-        chatViewModel.pretendingAsAnotherUser.observe(viewLifecycleOwner){ isPretendingAsAnotherUser ->
-            if (isPretendingAsAnotherUser){
+        chatViewModel.pretendingAsAnotherUser.observe(viewLifecycleOwner) { isPretendingAsAnotherUser ->
+            if (isPretendingAsAnotherUser) {
                 binding.tvCurrentUser.text = requireContext().getText(R.string.chatting_as_evans)
-                binding.tvCurrentUser.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-            } else{
+                binding.tvCurrentUser.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.red
+                    )
+                )
+            } else {
                 binding.tvCurrentUser.text = requireContext().getText(R.string.chatting_as_kai)
-                binding.tvCurrentUser.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                binding.tvCurrentUser.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.blue
+                    )
+                )
             }
         }
 
-        chatViewModel.errorMessage.observe(viewLifecycleOwner){
+        chatViewModel.errorMessage.observe(viewLifecycleOwner) {
             if (it != null)
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }
@@ -124,7 +141,7 @@ class ChatFragment : Fragment() {
 
         binding.btnSend.setOnClickListener {
             val input = binding.tietInputTextEditText.text.toString()
-            if (input.isNotEmpty()){
+            if (input.isNotEmpty()) {
                 chatViewModel.addMessage(input)
                 binding.tietInputTextEditText.text?.clear()
 
@@ -148,19 +165,22 @@ class ChatFragment : Fragment() {
                 generateBasicChatHistory()
                 true
             }
+
             R.id.generateSensitiveChatHistory -> {
                 generateSensitiveChatHistory()
                 true
             }
+
             R.id.clearChatHistory -> {
                 chatViewModel.setMessages(ArrayList())
                 true
             }
+
             else -> false
         }
     }
 
-    private fun generateBasicChatHistory(){
+    private fun generateBasicChatHistory() {
 
         val chatHistory = ArrayList<Message>()
         val calendar = Calendar.getInstance() // Get the current time
