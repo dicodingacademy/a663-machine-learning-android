@@ -6,6 +6,6 @@
     <string name="tv_inference_time_label">Inference Time: %d ms</string>
     <string name="ib_send_label">Send Button</string>
     <string name="tv_pick_topic_label">Pilihlah sebuah topik.</string>
-    <string name="tiet_question_label">Ketik pertanyaan Anda...</string>
+    <string name="tiet_question_label">Ask for what you want…</string>
     <string name="fragment_qa_title">%s - Bert QA</string>
 </resources>
