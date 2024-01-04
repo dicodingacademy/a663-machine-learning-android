@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "212310683067",
+    "project_id": "fir-ml-a3107",
+    "storage_bucket": "fir-ml-a3107.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212310683067:android:3c8455a460a7ed3d66689e",
+        "android_client_info": {
+          "package_name": "com.dicoding.latihantensorflowliteprediction"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMnbvIwI0UIQmo8Comm5Qm_hXV4T9hDBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212310683067:android:1fdb679d3467f57266689e",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelabs.recommendations"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMnbvIwI0UIQmo8Comm5Qm_hXV4T9hDBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
