@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Toko Kelontong Bert QA</string>
+    <string name="app_name">Bert QA</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tv_suggestion_label">Kamu mungkin ingin bertanya:</string>
