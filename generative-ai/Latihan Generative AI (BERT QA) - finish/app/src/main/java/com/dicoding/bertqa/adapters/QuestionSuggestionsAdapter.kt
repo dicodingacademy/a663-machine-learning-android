@@ -8,15 +8,14 @@ import com.dicoding.bertqa.databinding.ItemQuestionSuggestionBinding
 class QuestionSuggestionsAdapter(
     private val suggestedQuestions: List<String>,
     private val onOptionClickedCallback: OnOptionClicked
-)
-    : RecyclerView.Adapter<QuestionSuggestionsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<QuestionSuggestionsAdapter.ViewHolder>() {
 
-    interface OnOptionClicked{
+    interface OnOptionClicked {
         fun onOptionClicked(optionID: Int)
     }
 
-    inner class ViewHolder(val binding: ItemQuestionSuggestionBinding)
-        : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: ItemQuestionSuggestionBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemQuestionSuggestionBinding.inflate(
