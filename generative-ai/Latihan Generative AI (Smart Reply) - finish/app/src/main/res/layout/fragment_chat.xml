@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ChatFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -26,10 +26,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/rv_smartReplyOptions"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topAppBarLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/rv_smartReplyOptions"
         tools:listitem="@layout/item_message_local" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -37,22 +37,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_chatHistory"
         app:layout_constraintBottom_toTopOf="@id/til_inputTextLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_chatHistory"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_options_smartreply"/>
+        tools:listitem="@layout/item_options_smartreply" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_inputTextLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/input_text_hint"
         android:layout_marginTop="4dp"
+        android:hint="@string/input_text_hint"
+        app:layout_constraintEnd_toStartOf="@id/btn_send"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_smartReplyOptions"
-        app:layout_constraintEnd_toStartOf="@id/btn_send">
+        app:layout_constraintTop_toBottomOf="@id/rv_smartReplyOptions">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_inputTextEditText"
@@ -70,9 +70,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="@string/send_message_text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/til_inputTextLayout"
-        app:layout_constraintTop_toTopOf="@id/til_inputTextLayout"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/til_inputTextLayout" />
 
     <TextView
         android:id="@+id/tv_currentUser"
@@ -80,9 +80,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_inputTextLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Chatting as Kai" />
 
     <Button
@@ -90,11 +90,11 @@
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/switch_user_text"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:text="@string/switch_user_text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_inputTextLayout"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/til_inputTextLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

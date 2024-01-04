@@ -38,7 +38,7 @@ class TopicsFragment : Fragment() {
             topicsTitle = it.getTitles()
         }
 
-        val topicsAdapter = TopicsAdapter(topicsTitle, object: TopicsAdapter.OnItemSelected{
+        val topicsAdapter = TopicsAdapter(topicsTitle, object : TopicsAdapter.OnItemSelected {
             override fun onItemClicked(itemID: Int, itemTitle: String) {
                 startQaScreen(itemID, itemTitle)
             }
@@ -50,7 +50,7 @@ class TopicsFragment : Fragment() {
             linearLayoutManager.orientation
         )
 
-        with(binding.rvTopics){
+        with(binding.rvTopics) {
             layoutManager = linearLayoutManager
             adapter = topicsAdapter
             addItemDecoration(decoration)
@@ -58,7 +58,7 @@ class TopicsFragment : Fragment() {
 
     }
 
-    private fun startQaScreen(itemID: Int, itemTitle: String){
+    private fun startQaScreen(itemID: Int, itemTitle: String) {
         val action = TopicsFragmentDirections.actionTopicsFragmentToQAFragment(
             itemID,
             itemTitle

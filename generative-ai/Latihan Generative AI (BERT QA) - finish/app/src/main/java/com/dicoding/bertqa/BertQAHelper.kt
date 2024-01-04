@@ -24,9 +24,9 @@ class BertQAHelper(
 
         val baseOptionsBuilder = BaseOptions.builder()
 
-        if (CompatibilityList().isDelegateSupportedOnThisDevice){
+        if (CompatibilityList().isDelegateSupportedOnThisDevice) {
             baseOptionsBuilder.useGpu()
-        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1){
+        } else if (Build.VERSION.SDK_INT >= 27) {
             baseOptionsBuilder.useNnapi()
         } else {
             // Menggunakan CPU
@@ -48,8 +48,8 @@ class BertQAHelper(
 
     }
 
-    fun getQuestionAnswer(topicsContent: String, question: String){
-        if (bertQuestionAnswerer == null){
+    fun getQuestionAnswer(topicsContent: String, question: String) {
+        if (bertQuestionAnswerer == null) {
             setupBertQuestionAnswerer()
         }
 
