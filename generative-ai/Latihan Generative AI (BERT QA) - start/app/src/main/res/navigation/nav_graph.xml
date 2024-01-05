@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/topicsFragment"
         android:name="com.dicoding.bertqa.fragments.TopicsFragment"
-        android:label="Toko Kelontong Bert QA"
+        android:label="Bert QA"
         tools:layout="@layout/fragment_topics" >
         <action
             android:id="@+id/action_topicsFragment_to_QAFragment"

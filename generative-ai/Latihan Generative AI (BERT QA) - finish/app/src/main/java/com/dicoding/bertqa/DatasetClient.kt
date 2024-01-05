@@ -11,7 +11,7 @@ import java.io.InputStream
 class DataSetClient(private val context: Context) {
 
     private companion object {
-        private const val TAG = "TokoKelontongBertApp"
+        private const val TAG = "BertQAApp"
         private const val JSON_DIR = "topics.json"
     }
 
