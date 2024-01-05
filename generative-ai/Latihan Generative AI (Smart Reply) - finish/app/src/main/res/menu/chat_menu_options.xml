@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/generateBasicChatHistory"
+        android:title="@string/option_menu_generate_basic_chat_history"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/generateSensitiveChatHistory"
+        android:title="@string/option_menu_generate_sensitive_chat_history"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/clearChatHistory"
+        android:title="@string/clear_chat_history"
+        app:showAsAction="never" />
+
+</menu>

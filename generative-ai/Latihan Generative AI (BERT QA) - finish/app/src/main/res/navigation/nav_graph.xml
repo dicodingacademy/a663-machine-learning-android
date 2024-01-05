@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/topicsFragment">
+
+    <fragment
+        android:id="@+id/topicsFragment"
+        android:name="com.dicoding.bertqa.fragments.TopicsFragment"
+        android:label="Bert QA"
+        tools:layout="@layout/fragment_topics" >
+        <action
+            android:id="@+id/action_topicsFragment_to_QAFragment"
+            app:destination="@id/QAFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/QAFragment"
+        android:name="com.dicoding.bertqa.fragments.QAFragment"
+        tools:layout="@layout/fragment_q_a" >
+        <argument
+            android:name="topicID"
+            app:argType="integer" />
+        <argument
+            android:name="topicTitle"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Toko Kelontong Smart Reply</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="input_text_hint">Type a message</string>
+    <string name="send_message_text">Send</string>
+    <string name="switch_user_text">Switch User</string>
+    <string name="chatting_as_evans">Chatting as Evans</string>
+    <string name="chatting_as_kai">Chatting as Kai</string>
+    <string name="option_menu_generate_basic_chat_history">Generate basic chat history</string>
+    <string name="option_menu_generate_sensitive_chat_history">Generate sensitive chat history</string>
+    <string name="clear_chat_history">Clear chat history</string>
+</resources>
