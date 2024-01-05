@@ -7,13 +7,13 @@ import com.dicoding.smartreply.databinding.ItemOptionsSmartreplyBinding
 
 class ReplyOptionsAdapter(
     private val onItemClickCallback: OnItemClickCallback
-): RecyclerView.Adapter<ReplyOptionsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ReplyOptionsAdapter.ViewHolder>() {
 
-    interface OnItemClickCallback{
+    interface OnItemClickCallback {
         fun onOptionClicked(optionText: String)
     }
 
-    inner class ViewHolder(val binding: ItemOptionsSmartreplyBinding):
+    inner class ViewHolder(val binding: ItemOptionsSmartreplyBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(

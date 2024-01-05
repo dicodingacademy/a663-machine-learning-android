@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.smartreply.utils.getProfileIcon
 
-class ChatHistoryAdapter: RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHolder>() {
+class ChatHistoryAdapter : RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHolder>() {
 
     private val chatHistory = ArrayList<Message>()
 
@@ -18,13 +18,14 @@ class ChatHistoryAdapter: RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHol
             notifyDataSetChanged()
         }
 
-    inner class MessageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ChatHistoryAdapter.MessageViewHolder {
-        val messageItemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false) as ViewGroup
+        val messageItemView =
+            LayoutInflater.from(parent.context).inflate(viewType, parent, false) as ViewGroup
         return MessageViewHolder(messageItemView)
     }
 
@@ -45,9 +46,9 @@ class ChatHistoryAdapter: RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHol
         return if (
             chatHistory[position].isLocalUser && !pretendingAsAnotherUser ||
             !chatHistory[position].isLocalUser && pretendingAsAnotherUser
-        ){
+        ) {
             R.layout.item_message_local
-        }else{
+        } else {
             R.layout.item_message_another_user
         }
 
@@ -57,7 +58,7 @@ class ChatHistoryAdapter: RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHol
         return chatHistory.size
     }
 
-    fun setChatHistory(messages: List<Message>){
+    fun setChatHistory(messages: List<Message>) {
         chatHistory.clear()
         chatHistory.addAll(messages)
         notifyDataSetChanged()

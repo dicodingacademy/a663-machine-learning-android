@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ChatViewModel: ViewModel() {
+class ChatViewModel : ViewModel() {
 
     private val anotherUserID = "101"
 
@@ -21,7 +21,7 @@ class ChatViewModel: ViewModel() {
         _pretendingAsAnotherUser.value = false
     }
 
-    fun switchUser(){
+    fun switchUser() {
         val value = _pretendingAsAnotherUser.value!!
         _pretendingAsAnotherUser.value = !value
     }
@@ -30,7 +30,7 @@ class ChatViewModel: ViewModel() {
         _chatHistory.value = messages
     }
 
-    companion object{
+    companion object {
         private const val TAG = "ChatViewModel"
     }
 
