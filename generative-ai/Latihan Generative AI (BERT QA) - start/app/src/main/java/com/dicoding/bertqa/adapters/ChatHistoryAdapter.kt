@@ -11,14 +11,15 @@ import com.dicoding.bertqa.models.Message
 
 import com.dicoding.bertqa.utils.getProfileIcon
 
-class ChatHistoryAdapter: RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHolder>() {
+class ChatHistoryAdapter : RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHolder>() {
 
     private val chatHistory = ArrayList<Message>()
 
-    inner class MessageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val messageItemView = LayoutInflater.from(parent.context).inflate(viewType, parent, false) as ViewGroup
+        val messageItemView =
+            LayoutInflater.from(parent.context).inflate(viewType, parent, false) as ViewGroup
         return MessageViewHolder(messageItemView)
     }
 
@@ -33,9 +34,9 @@ class ChatHistoryAdapter: RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHol
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (chatHistory[position].isFromUser){
+        return if (chatHistory[position].isFromUser) {
             R.layout.item_message_local
-        }else{
+        } else {
             R.layout.item_message_another_user
         }
     }
@@ -44,7 +45,7 @@ class ChatHistoryAdapter: RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHol
         return chatHistory.size
     }
 
-    fun addMessage(message: Message){
+    fun addMessage(message: Message) {
         chatHistory.add(message)
         notifyDataSetChanged()
     }

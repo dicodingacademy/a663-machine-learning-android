@@ -48,7 +48,7 @@ class QAFragment : Fragment() {
         initQuestionSuggestionsRecyclerView()
         initBertQAModel()
 
-        binding.tietQuestion.addTextChangedListener(object: TextWatcher{
+        binding.tietQuestion.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // pass
             }
@@ -66,18 +66,19 @@ class QAFragment : Fragment() {
         })
 
         binding.ibSend.setOnClickListener {
-            if (it.isClickable && (binding.tietQuestion.text?.isNotEmpty() == true)){
-                with(binding.tietQuestion){
+            if (it.isClickable && (binding.tietQuestion.text?.isNotEmpty() == true)) {
+                with(binding.tietQuestion) {
 
                     val question = this.text.toString()
                     this.text?.clear()
 
                 }
-            }else{
+            } else {
                 Toast.makeText(
                     requireContext(),
                     "Harap masukkan sebuah pertanyaan terlebih dahulu",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             val imm = requireContext().getSystemService(
@@ -94,7 +95,7 @@ class QAFragment : Fragment() {
 
     }
 
-    private fun initChatHistoryRecyclerView(){
+    private fun initChatHistoryRecyclerView() {
         val historyLayoutManager = LinearLayoutManager(context)
         binding.rvChatHistory.layoutManager = historyLayoutManager
 
@@ -103,18 +104,21 @@ class QAFragment : Fragment() {
 
     }
 
-    private fun initQuestionSuggestionsRecyclerView(){
+    private fun initQuestionSuggestionsRecyclerView() {
 
-        if (topicSuggestedQuestions.isNotEmpty()){
+        if (topicSuggestedQuestions.isNotEmpty()) {
             val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-            with(binding.rvQuestionSuggestions){
-                adapter = QuestionSuggestionsAdapter(topicSuggestedQuestions, object: QuestionSuggestionsAdapter.OnOptionClicked{
-                    override fun onOptionClicked(optionID: Int) {
+            with(binding.rvQuestionSuggestions) {
+                adapter = QuestionSuggestionsAdapter(
+                    topicSuggestedQuestions,
+                    object : QuestionSuggestionsAdapter.OnOptionClicked {
+                        override fun onOptionClicked(optionID: Int) {
 
-                    }
+                        }
 
-                })
-                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                    })
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 addItemDecoration(decoration)
             }
         } else {
@@ -124,7 +128,7 @@ class QAFragment : Fragment() {
 
     }
 
-    private fun initBertQAModel(){
+    private fun initBertQAModel() {
 
     }
 

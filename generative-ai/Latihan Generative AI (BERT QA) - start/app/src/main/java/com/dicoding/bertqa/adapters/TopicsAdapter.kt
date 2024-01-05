@@ -8,13 +8,14 @@ import com.dicoding.bertqa.databinding.ItemTopicBinding
 class TopicsAdapter(
     private val topicsTitle: List<String>,
     private val onItemSelectedCallback: OnItemSelected
-): RecyclerView.Adapter<TopicsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<TopicsAdapter.ViewHolder>() {
 
-    interface OnItemSelected{
+    interface OnItemSelected {
         fun onItemClicked(itemID: Int, itemTitle: String)
     }
 
     inner class ViewHolder(val binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemTopicBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -27,7 +28,7 @@ class TopicsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.tvTopicTitle.text = topicsTitle[position]
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             onItemSelectedCallback.onItemClicked(position, topicsTitle[position])
         }
 

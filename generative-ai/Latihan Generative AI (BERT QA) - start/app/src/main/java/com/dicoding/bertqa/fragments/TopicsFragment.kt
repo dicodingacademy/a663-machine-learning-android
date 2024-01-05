@@ -38,7 +38,7 @@ class TopicsFragment : Fragment() {
             linearLayoutManager.orientation
         )
 
-        with(binding.rvTopics){
+        with(binding.rvTopics) {
             layoutManager = linearLayoutManager
             adapter = topicsAdapter
             addItemDecoration(decoration)
@@ -46,7 +46,7 @@ class TopicsFragment : Fragment() {
 
     }
 
-    private fun startQaScreen(itemID: Int, itemTitle: String){
+    private fun startQaScreen(itemID: Int, itemTitle: String) {
         val action = TopicsFragmentDirections.actionTopicsFragmentToQAFragment(
             itemID,
             itemTitle
