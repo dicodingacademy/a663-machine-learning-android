@@ -95,11 +95,10 @@ class CameraActivity : AppCompatActivity() {
             val imageAnalyzer = ImageAnalysis.Builder().setResolutionSelector(resolutionSelector)
                 .setTargetRotation(binding.viewFinder.display.rotation)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888).build().also {
-                    it.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
-                        objectDetectorHelper.detectObject(image)
-                    }
-                }
+                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888).build()
+            imageAnalyzer.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
+                objectDetectorHelper.detectObject(image)
+            }
 
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             val preview = Preview.Builder().build().also {
