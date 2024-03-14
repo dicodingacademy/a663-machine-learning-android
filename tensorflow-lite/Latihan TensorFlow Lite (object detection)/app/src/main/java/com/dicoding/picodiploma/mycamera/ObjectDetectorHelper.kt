@@ -2,11 +2,13 @@ package com.dicoding.picodiploma.mycamera
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.SystemClock
 import android.util.Log
 import androidx.camera.core.ImageProxy
 import com.google.android.gms.tflite.client.TfLiteInitializationOptions
 import com.google.android.gms.tflite.gpu.support.TfLiteGpu
+import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.Rot90Op
@@ -43,7 +45,14 @@ class ObjectDetectorHelper(
             .setScoreThreshold(threshold)
             .setMaxResults(maxResults)
         val baseOptionsBuilder = BaseOptions.builder()
-            .useGpu()
+        if (CompatibilityList().isDelegateSupportedOnThisDevice) {
+            baseOptionsBuilder.useGpu()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            baseOptionsBuilder.useNnapi()
+        } else {
+            // Menggunakan CPU
+            baseOptionsBuilder.setNumThreads(4)
+        }
         optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
         try {
