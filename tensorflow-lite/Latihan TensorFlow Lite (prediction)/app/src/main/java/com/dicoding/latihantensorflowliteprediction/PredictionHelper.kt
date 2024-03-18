@@ -89,6 +89,10 @@ class PredictionHelper(
         }
     }
 
+    fun close() {
+        interpreter?.close()
+    }
+
     companion object {
         private const val TAG = "PredictionHelper"
     }
