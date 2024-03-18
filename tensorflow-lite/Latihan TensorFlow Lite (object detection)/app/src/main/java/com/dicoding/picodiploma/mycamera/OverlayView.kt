@@ -14,7 +14,10 @@ import java.text.NumberFormat
 import java.util.LinkedList
 import kotlin.math.max
 
-class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
+class OverlayView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) : View(context, attrs) {
 
     private var boxPaint = Paint()
     private var textBackgroundPaint = Paint()
