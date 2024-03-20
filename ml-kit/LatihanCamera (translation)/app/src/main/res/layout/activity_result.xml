@@ -43,5 +43,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             tools:text="@string/result" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/translated_by_google" />
     </LinearLayout>
 </ScrollView>
