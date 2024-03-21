@@ -22,12 +22,14 @@ class PredictionHelper(
 ) {
 
     private var interpreter: InterpreterApi? = null
+    private var isGPUSupported: Boolean = false
 
     init {
         TfLiteGpu.isGpuDelegateAvailable(context).onSuccessTask { gpuAvailable ->
             val optionsBuilder = TfLiteInitializationOptions.builder()
             if (gpuAvailable) {
                 optionsBuilder.setEnableGpuDelegateSupport(true)
+                isGPUSupported = true
             }
             TfLite.initialize(context, optionsBuilder.build())
         }.addOnSuccessListener {
@@ -51,7 +53,9 @@ class PredictionHelper(
         try {
             val options = InterpreterApi.Options()
                 .setRuntime(InterpreterApi.Options.TfLiteRuntime.FROM_SYSTEM_ONLY)
-                .addDelegateFactory(GpuDelegateFactory())
+            if (isGPUSupported){
+                options.addDelegateFactory(GpuDelegateFactory())
+            }
             if (model is ByteBuffer) {
                 interpreter = InterpreterApi.create(model, options)
             }
