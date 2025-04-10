@@ -71,7 +71,12 @@ class ChatFragment : Fragment() {
         chatViewModel = ViewModelProvider(this).get(ChatViewModel::class.java)
 
         chatViewModel.chatHistory.observe(viewLifecycleOwner) { messages ->
-            chatAdapter.setChatHistory(messages)
+            if (chatViewModel.pretendingAsAnotherUser.value == null) {
+                chatAdapter.setChatHistory(messages)
+            } else {
+                chatAdapter.setChatHistory(messages, chatViewModel.pretendingAsAnotherUser.value!!)
+            }
+
             if (chatAdapter.itemCount > 0) {
                 binding.rvChatHistory.smoothScrollToPosition(chatAdapter.itemCount - 1)
             }

@@ -58,7 +58,9 @@ class ChatHistoryAdapter : RecyclerView.Adapter<ChatHistoryAdapter.MessageViewHo
         return chatHistory.size
     }
 
-    fun setChatHistory(messages: List<Message>) {
+    fun setChatHistory(messages: List<Message>, isPretendingAsAnotherUser:Boolean = this.pretendingAsAnotherUser) {
+        this.pretendingAsAnotherUser = isPretendingAsAnotherUser
+
         chatHistory.clear()
         chatHistory.addAll(messages)
         notifyDataSetChanged()
